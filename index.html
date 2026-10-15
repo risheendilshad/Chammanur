@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ചമ്മന്നൂർ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#201d17; --muted:#6b6250;
+    --clay:#b24e2c; --gold:#e0a82e; --green:#2f8f6b; --teal:#00a6b8; --violet:#7c5cff; --rose:#ff4d6d;
+    --line:#eee8d6; --ease:cubic-bezier(.2,.9,.3,1);
+    --serif:'Noto Serif Malayalam',serif;
+    --sans:'Noto Sans Malayalam',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--clay);color:#fff}
+
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:100;background:linear-gradient(90deg,var(--rose),var(--gold),var(--green),var(--teal),var(--violet))}
+  .cursor{position:fixed;top:0;left:0;width:26px;height:26px;border-radius:50%;border:2px solid var(--clay);pointer-events:none;z-index:99;transition:width .25s,height .25s,background .25s;mix-blend-mode:multiply}
+  .cursor.big{width:68px;height:68px;background:rgba(178,78,44,.12)}
+  @media (hover:none){.cursor{display:none}}
+
+  /* nav */
+  header.site{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;transition:background .3s,padding .3s,box-shadow .3s;animation:dropIn .9s var(--ease) both}
+  header.site.scrolled{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);padding:12px 5vw;box-shadow:0 1px 0 var(--line)}
+  .mark{font-family:var(--serif);font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:10px}
+  .mark i{width:12px;height:12px;border-radius:50%;background:var(--clay);display:block;position:relative}
+  .mark i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--clay);animation:ping 1.8s ease-out infinite}
+  nav.site ul{display:flex;gap:30px;list-style:none}
+  nav.site a{position:relative;font-size:.95rem;font-weight:500;color:var(--muted);transition:color .2s}
+  nav.site a:hover{color:var(--ink)}
+  nav.site a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--clay);transition:width .3s}
+  nav.site a:hover::after{width:100%}
+  .nav-toggle{display:none;width:38px;height:38px;border:0;background:none;cursor:pointer;align-items:center;justify-content:center}
+  .nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{content:"";display:block;width:22px;height:2px;background:var(--ink);position:relative;transition:.25s}
+  .nav-toggle span::before{position:absolute;top:-7px}.nav-toggle span::after{position:absolute;top:7px}
+  header.site.open .nav-toggle span{background:transparent}
+  header.site.open .nav-toggle span::before{top:0;transform:rotate(45deg)}
+  header.site.open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
+  @media(max-width:760px){
+    .nav-toggle{display:flex}
+    nav.site{position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.97);max-height:0;overflow:hidden;transition:max-height .35s var(--ease);border-bottom:1px solid var(--line)}
+    header.site.open nav.site{max-height:360px}
+    nav.site ul{flex-direction:column;gap:4px;padding:12px 6vw 22px}
+    nav.site a{display:block;padding:8px 0;font-size:1.05rem}
+  }
+
+  /* hero */
+  .hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px 6vw 90px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(55px);opacity:.5;will-change:transform;z-index:0}
+  .b1{width:44vmax;height:44vmax;background:#7fd8c0;top:-16vmax;left:-12vmax;animation:float1 14s ease-in-out infinite}
+  .b2{width:38vmax;height:38vmax;background:#ffb08a;bottom:-14vmax;right:-10vmax;animation:float2 17s ease-in-out infinite}
+  .b3{width:26vmax;height:26vmax;background:#ffe08a;top:30%;right:16%;animation:float3 12s ease-in-out infinite;opacity:.45}
+  .b4{width:22vmax;height:22vmax;background:#b9a8ff;bottom:6%;left:10%;animation:float1 19s ease-in-out infinite reverse;opacity:.35}
+  .shape{position:absolute;z-index:1;pointer-events:none}
+  .ring{width:84px;height:84px;border:6px solid var(--green);border-radius:50%;top:24%;left:9%;animation:bob 6s ease-in-out infinite}
+  .sq{width:56px;height:56px;background:var(--gold);border-radius:14px;top:18%;right:13%;animation:rot 8s ease-in-out infinite}
+  .tri{border-left:36px solid transparent;border-right:36px solid transparent;border-bottom:62px solid var(--rose);top:68%;right:10%;animation:spin 10s linear infinite}
+  .dots{width:120px;height:120px;bottom:14%;left:7%;background-image:radial-gradient(var(--teal) 3px,transparent 3px);background-size:20px 20px;animation:bob 7s ease-in-out infinite reverse}
+  .leaf{font-size:2.4rem;top:14%;left:30%;animation:fall 9s ease-in-out infinite}
+  .leaf.l2{top:10%;left:68%;animation-delay:-4s;font-size:2rem}
+  .leaf.l3{top:20%;left:50%;animation-delay:-7s;font-size:1.6rem}
+
+  .hero-inner{position:relative;z-index:2;max-width:980px}
+  .pill{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:99px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 30px rgba(178,78,44,.14);font-size:.88rem;font-weight:600;margin-bottom:26px;animation:rise .9s .2s both}
+  .pill b{width:9px;height:9px;border-radius:50%;background:#22c55e;position:relative;flex:none}
+  .pill b::after{content:"";position:absolute;inset:0;border-radius:50%;background:#22c55e;animation:ping 1.6s ease-out infinite}
+  h1{font-family:var(--serif);font-size:clamp(2.3rem,6.6vw,5.2rem);line-height:1.3;font-weight:800}
+  h1 .line{display:block;overflow:hidden;padding-bottom:.12em}
+  h1 .line span{display:inline-block;transform:translateY(120%);animation:slideUp 1s var(--ease) forwards}
+  h1 .line:nth-child(2) span{animation-delay:.15s}h1 .line:nth-child(3) span{animation-delay:.3s}
+  .grad{background:linear-gradient(90deg,var(--clay),var(--gold),var(--green),var(--teal),var(--clay));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradMove 6s linear infinite}
+  .sub{margin:28px auto 14px;max-width:640px;font-size:1.08rem;color:var(--muted);animation:rise 1s .7s both}
+  .sub2{margin:0 auto 38px;max-width:640px;font-size:1rem;color:var(--muted);animation:rise 1s .8s both}
+  .sub2 a{color:var(--clay);font-weight:600;border-bottom:2px solid var(--gold)}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:rise 1s .95s both}
+  .btn{display:inline-block;padding:14px 32px;border-radius:99px;font-weight:700;font-size:.98rem;transition:transform .2s,box-shadow .3s,background .3s,color .3s;position:relative;overflow:hidden;border:0;cursor:pointer;font-family:inherit}
+  .btn.primary{background:var(--ink);color:#fff}
+  .btn.primary::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--clay),var(--gold));transform:translateX(-101%);transition:transform .45s var(--ease)}
+  .btn.primary:hover::before{transform:none}.btn.primary span{position:relative;z-index:1}
+  .btn.ghost{border:2px solid var(--ink);background:transparent}.btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:hover{box-shadow:0 14px 34px rgba(0,0,0,.16)}
+  .badge{position:absolute;z-index:3;right:6vw;bottom:9vh;width:130px;height:130px;animation:spin 14s linear infinite}
+  .badge text{font-size:11px;font-weight:700;letter-spacing:1px;fill:var(--ink);font-family:var(--sans)}
+  .badge-core{position:absolute;z-index:3;right:calc(6vw + 45px);bottom:calc(9vh + 45px);width:40px;height:40px;border-radius:50%;background:var(--clay);display:grid;place-items:center;color:#fff;animation:pulse 2s ease-in-out infinite}
+  @media(max-width:760px){.badge,.badge-core{display:none}}
+  .scroll{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:3;font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scroll i{width:2px;height:42px;background:linear-gradient(var(--ink),transparent);animation:drip 1.8s ease-in-out infinite;transform-origin:top}
+
+  /* marquee */
+  .marquee{padding:22px 0;border-block:2px solid var(--ink);overflow:hidden;white-space:nowrap}
+  .track{display:inline-flex;gap:56px;animation:marq 26s linear infinite}
+  .marquee.rev .track{animation-direction:reverse;animation-duration:32s}
+  .marquee span{font-family:var(--serif);font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1.5;font-weight:800;display:inline-flex;align-items:center;gap:56px}
+  .marquee span::after{content:"✦";color:var(--clay);font-size:.6em;animation:spin 4s linear infinite;display:inline-block}
+  .marquee .out{-webkit-text-stroke:1.5px var(--ink);color:transparent}
+  .marquee:hover .track{animation-play-state:paused}
+
+  /* sections */
+  section{padding:110px 6vw;position:relative}
+  .inner{max-width:1100px;margin:0 auto}
+  .tag{font-weight:700;color:var(--clay);font-size:.9rem;margin-bottom:10px}
+  h2{font-family:var(--serif);font-size:clamp(2rem,5vw,3.6rem);line-height:1.35;font-weight:800;max-width:860px}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:56px}
+  .note{color:var(--muted);font-size:.9rem;font-weight:500}
+  .reveal{opacity:0;transform:translateY(56px) scale(.97);transition:opacity .9s,transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.left{transform:translateX(-70px)}.reveal.right{transform:translateX(70px)}
+  .reveal.left.in,.reveal.right.in{transform:none}
+
+  /* stories */
+  .story-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .story-card{padding:34px;border-radius:28px;border:2px solid var(--line);background:#fff;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .story-card::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--c);top:-110px;right:-110px;opacity:.18;transition:transform .6s}
+  .story-card:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:0 28px 55px rgba(0,0,0,.1);border-color:var(--c)}
+  .story-card:hover::before{transform:scale(3)}
+  .story-card.featured{grid-column:span 2}
+  .story-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;position:relative}
+  .story-type{padding:3px 14px;border-radius:99px;background:var(--c);color:#fff;font-size:.8rem;font-weight:700}
+  .story-year{color:var(--muted);font-size:.85rem}
+  .story-card h3{font-family:var(--serif);font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.4;font-weight:600;margin-bottom:8px;position:relative}
+  .story-by{color:var(--muted);font-size:.9rem;margin-bottom:18px;position:relative}.story-by span{margin:0 6px;opacity:.5}
+  .story-content p,.poem p{color:#4b4636;font-size:1rem;line-height:1.95;position:relative}
+  .story-extra{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .4s,margin-top .5s var(--ease)}
+  .story-extra>div{overflow:hidden}.story-extra p+p{margin-top:14px}
+  .story-card.expanded .story-extra{grid-template-rows:1fr;opacity:1;margin-top:14px}
+  .poem{padding-left:18px;border-left:3px solid var(--gold);position:relative}
+  .poem p{font-family:var(--serif);font-size:1.1rem}
+  .expand-story{display:inline-flex;align-items:center;gap:10px;margin-top:20px;border:0;background:none;color:var(--clay);cursor:pointer;font:inherit;font-size:.9rem;font-weight:700;position:relative}
+  .expand-icon{display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--c);border-radius:50%;color:var(--c);font-size:1rem;line-height:1;transition:transform .3s var(--ease),background .3s,color .3s}
+  .story-card.expanded .expand-icon{transform:rotate(45deg);background:var(--c);color:#fff}
+
+  /* gallery */
+  .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .gallery-card{position:relative;height:330px;border-radius:30px;overflow:hidden;background:var(--bg);cursor:zoom-in;isolation:isolate;transition:transform .5s var(--ease),border-radius .5s,box-shadow .4s}
+  .gallery-card::before,.gallery-card::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.22);z-index:0}
+  .gallery-card::before{width:220px;height:220px;top:-60px;right:-50px;animation:float3 9s ease-in-out infinite}
+  .gallery-card::after{width:140px;height:140px;top:100px;left:-40px;animation:float1 11s ease-in-out infinite}
+  .gallery-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:transform .7s var(--ease)}
+  .gallery-card .shade{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(14,27,22,.85),rgba(14,27,22,.1) 60%,transparent);pointer-events:none}
+  .gallery-card .cap{position:absolute;left:24px;right:24px;bottom:22px;z-index:3;color:#fff;transform:translateY(6px);transition:transform .4s var(--ease)}
+  .cap span{display:block;font-size:.75rem;letter-spacing:.12em;font-weight:700;color:#ffe08a;margin-bottom:2px}
+  .cap h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;line-height:1.4}
+  .cap p{font-size:.88rem;opacity:.9}
+  .gallery-card:hover{transform:scale(1.03) rotate(.6deg);border-radius:56px;box-shadow:0 28px 55px rgba(0,0,0,.22)}
+  .gallery-card:hover img{transform:scale(1.1)}.gallery-card:hover .cap{transform:none}
+  .lightbox{position:fixed;inset:0;z-index:120;background:rgba(14,20,18,.92);display:flex;align-items:center;justify-content:center;padding:40px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .lightbox.open{opacity:1;pointer-events:auto}
+  .lightbox img{max-width:100%;max-height:100%;border-radius:10px;transform:scale(.94);transition:transform .35s var(--ease)}
+  .lightbox.open img{transform:none}
+  .lightbox-close{position:absolute;top:22px;right:26px;width:42px;height:42px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:none;color:#fff;font-size:20px;cursor:pointer}
+
+  /* businesses */
+  .business-intro{max-width:62ch;color:var(--muted);margin:-26px 0 44px}
+  .business-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .business-card{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:28px;border-radius:26px;border:2px solid var(--line);background:#fff;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .business-card::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:var(--c);top:-100px;right:-100px;opacity:.2;transition:transform .6s}
+  .business-card:hover{transform:translateY(-10px) rotate(-1deg);box-shadow:0 28px 55px rgba(0,0,0,.11);border-color:var(--c)}
+  .business-card:hover::before{transform:scale(3.2)}
+  .business-icon{width:56px;height:56px;border-radius:18px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:1.6rem;animation:bob 4s ease-in-out infinite;position:relative}
+  .business-card:nth-child(2) .business-icon{animation-delay:-1s}.business-card:nth-child(3) .business-icon{animation-delay:-2s}.business-card:nth-child(4) .business-icon{animation-delay:-3s}
+  .business-category{display:block;font-size:.8rem;font-weight:700;color:var(--c);margin-bottom:2px;position:relative}
+  .business-card h3{font-family:var(--serif);font-size:1.4rem;line-height:1.45;font-weight:600;margin-bottom:4px;position:relative}
+  .business-card p{color:var(--muted);font-size:.95rem;line-height:1.7;position:relative}
+  .business-cta{margin-top:48px;padding:44px;border-radius:34px;background:var(--ink);color:#fff;position:relative;overflow:hidden}
+  .business-cta .orb{position:absolute;border-radius:50%;filter:blur(45px);opacity:.55}
+  .o1{width:300px;height:300px;background:var(--clay);left:-90px;top:-100px;animation:float1 10s ease-in-out infinite}
+  .o2{width:260px;height:260px;background:var(--green);right:-80px;bottom:-100px;animation:float2 12s ease-in-out infinite}
+  .business-cta>*{position:relative;z-index:1}
+  .business-cta .tag{color:var(--gold)}
+  .business-cta h3{font-family:var(--serif);font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.4;font-weight:800;margin-bottom:10px}
+  .business-cta>p{max-width:58ch;opacity:.85}
+
+  /* forms */
+  .form{display:flex;flex-direction:column;gap:22px;max-width:640px;margin-top:30px}
+  .form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .field{position:relative}
+  .field label{display:block;font-size:.88rem;font-weight:600;margin-bottom:4px;opacity:.8}
+  .field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:2px solid var(--line);padding:9px 2px;font:inherit;font-size:1rem;color:inherit;transition:border-color .25s}
+  .field textarea{min-height:120px;resize:vertical}
+  .field input:focus,.field textarea:focus{outline:0;border-color:var(--clay)}
+  .dark .field input,.dark .field textarea{border-bottom-color:rgba(255,255,255,.25)}
+  .dark .field input:focus,.dark .field textarea:focus{border-color:var(--gold)}
+  .dark input::placeholder,.dark textarea::placeholder{color:rgba(255,255,255,.4)}
+  .wa-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;background:#25a85a;color:#fff;border:0;padding:14px 28px;border-radius:99px;font:inherit;font-weight:700;font-size:.98rem;cursor:pointer;transition:transform .2s,box-shadow .3s}
+  .wa-btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(37,168,90,.4)}
+  .wa-btn svg{width:18px;height:18px;animation:wiggle 2.4s ease-in-out infinite}
+  .form-note{font-size:.85rem;opacity:.75}
+  @media(max-width:560px){.wa-btn{align-self:stretch;justify-content:center}}
+
+  /* voices */
+  .voice{display:grid;grid-template-columns:70px 1fr;gap:20px;padding:34px 0;border-bottom:2px solid var(--line)}
+  .voice:last-child{border:0}
+  .qm{font-family:var(--serif);font-size:5rem;line-height:.9;color:var(--gold);animation:wobble 3s ease-in-out infinite}
+  .voice blockquote{font-family:var(--serif);font-size:clamp(1.1rem,2.2vw,1.45rem);line-height:1.8;max-width:60ch}
+  .voice cite{display:block;margin-top:14px;font-style:normal;font-size:.92rem;color:var(--muted)}
+  .voice cite b{color:var(--clay)}
+
+  /* contact */
+  .cta{margin:0 4vw 70px;border-radius:48px;background:var(--ink);color:#fff;text-align:center;padding:110px 6vw;overflow:hidden;position:relative}
+  .cta>*{position:relative;z-index:1}
+  .cta h2{margin:0 auto 18px}
+  .cta p{opacity:.85;margin-bottom:34px}
+  .cta .btn{background:#fff;color:var(--ink)}.cta .btn:hover{background:var(--gold)}
+  footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:0 6vw 46px;color:var(--muted);font-size:.9rem}
+
+  @media(max-width:860px){
+    section{padding:80px 6vw}
+    .story-grid,.gallery-grid,.business-grid{grid-template-columns:1fr}
+    .story-card.featured{grid-column:span 1}
+    .form-row{grid-template-columns:1fr}
+    .business-cta{padding:30px 24px}
+    .gallery-card{height:280px}
+  }
+
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(8vw,6vh) scale(1.15)}66%{transform:translate(-4vw,10vh) scale(.92)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-10vw,-8vh) scale(1.2)}}
+  @keyframes float3{0%,100%{transform:translate(0,0)}25%{transform:translate(-6vw,4vh)}50%{transform:translate(2vw,-6vh)}75%{transform:translate(6vw,3vh)}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-22px) rotate(8deg)}}
+  @keyframes rot{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.3);border-radius:50%}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes fall{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(40px,60px) rotate(40deg)}50%{transform:translate(-20px,130px) rotate(-30deg)}75%{transform:translate(30px,60px) rotate(25deg)}}
+  @keyframes slideUp{to{transform:none}}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  @keyframes dropIn{from{transform:translateY(-100%)}to{transform:none}}
+  @keyframes gradMove{to{background-position:300% 0}}
+  @keyframes wobble{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(4deg) scale(1.08)}}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}10%,30%{transform:rotate(-12deg)}20%,40%{transform:rotate(12deg)}50%{transform:rotate(0)}}
+  @keyframes ping{to{transform:scale(3.2);opacity:0}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+  @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    h1 .line span{transform:none}.reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="cursor" id="cursor"></div>
+
+<header class="site" id="siteHeader">
+  <a class="mark" href="#top"><i></i>ചമ്മന്നൂർ</a>
+  <button class="nav-toggle" id="navToggle" aria-label="മെനു" aria-expanded="false" aria-controls="siteNav"><span></span></button>
+  <nav class="site" id="siteNav">
+    <ul>
+      <li><a href="#writing">എഴുത്തുകൾ</a></li>
+      <li><a href="#gallery">ഗാലറി</a></li>
+      <li><a href="#businesses">സംരംഭങ്ങൾ</a></li>
+      <li><a href="#voices">ശബ്ദങ്ങൾ</a></li>
+      <li><a href="#submit">അയക്കുക</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+  <div class="shape ring" data-depth="30"></div>
+  <div class="shape sq" data-depth="-40"></div>
+  <div class="shape tri" data-depth="50"></div>
+  <div class="shape dots" data-depth="-25"></div>
+  <div class="shape leaf" data-depth="20">🌿</div>
+  <div class="shape leaf l2" data-depth="-30">🌴</div>
+  <div class="shape leaf l3" data-depth="25">🍃</div>
+
+  <div class="hero-inner">
+    <div class="pill"><b></b> പുന്നയൂർക്കുളം, ചമ്മന്നൂരിലെ ജീവിതത്തിലേക്കൊരു ജാലകം</div>
+    <h1>
+      <span class="line"><span>ചമ്മന്നൂരിന്റെ</span></span>
+      <span class="line"><span>ഹൃദയത്തിൽ നിന്നുള്ള</span></span>
+      <span class="line"><span class="grad">കഥകൾ.</span></span>
+    </h1>
+    <p class="sub">തൃശ്ശൂർ ജില്ലയുടെ തീരത്തുള്ള പുന്നയൂർക്കുളത്തെ ഒരു കൊച്ചു ഗ്രാമമാണ് ചമ്മന്നൂർ . നെൽപ്പാടങ്ങൾക്കും ക്ഷേത്രോത്സവങ്ങൾക്കും, തലമുറകളായി ഇവിടെ ജീവിക്കുന്ന മനുഷ്യർക്കും പേരുകേട്ട നാട്.</p>
+    <p class="sub2">ഇന്ന് ഇവിടത്തെ ഒട്ടേറെ യുവാക്കൾ കൊച്ചിയിലും ബെംഗളൂരുവിലും ഗൾഫിലും ജോലി ചെയ്യുന്നു. ഗ്രാമത്തെ ഒന്നിപ്പിച്ചു നിർത്തുക എന്നതാണ് ഈ സൈറ്റിന്റെ ലക്ഷ്യം . ഇവിടത്തെ കഥകൾ, മുതിർന്നവരുടെ ഓർമ്മകൾ, ഉത്സവങ്ങൾ, എഴുതിവെക്കപ്പെടാതെ പോകുന്ന ദൈനംദിന നിമിഷങ്ങൾ. പറയാൻ ഒരു കഥയുണ്ടോ? <a href="#submit">നിങ്ങളുടെ കഥ പങ്കിടൂ</a>.</p>
+    <div class="btns">
+      <a href="#writing" class="btn primary magnetic"><span>കഥകൾ വായിക്കൂ →</span></a>
+      <a href="#submit" class="btn ghost magnetic">നിങ്ങളുടേതും പങ്കിടൂ</a>
+    </div>
+  </div>
+
+  <svg class="badge" viewBox="0 0 130 130">
+    <defs><path id="circ" d="M65,65 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"/></defs>
+    <text><textPath href="#circ">ഞങ്ങളുടെ ഗ്രാമം • ഞങ്ങളുടെ കഥകൾ • ഞങ്ങളുടെ ഗ്രാമം •</textPath></text>
+  </svg>
+  <div class="badge-core">✦</div>
+  <div class="scroll">താഴേക്ക്<i></i></div>
+</div>
+
+<div class="marquee">
+  <div class="track">
+    <span>Chammaur Fest 2027 Declared JANUARY 16 2027 saturday</span><span class="out"></span><span></span><span class="out"></span>
+    <span></span><span class="out"></span><span></span><span class="out"></span>
+  </div>
+</div>
+
+<!-- STORIES -->
+<section id="writing">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal left"><p class="tag">നാട്ടുകാരിൽ നിന്ന്</p><h2>ചമ്മന്നൂരിന്റെ <span class="grad">കഥകൾ</span></h2></div>
+      <span class="note reveal">ശബ്ദങ്ങൾ · ഓർമ്മകൾ · കവിതകൾ</span>
+    </div>
+
+    <div class="story-grid">
+      <article class="story-card featured reveal" style="--c:#b24e2c">
+        <div class="story-meta"><span class="story-type">ഓർമ്മ</span><span class="story-year">2026</span></div>
+        <h3>പൂരം പുലർച്ചെ തുടങ്ങിയ കാലം</h3>
+        <p class="story-by"><strong>രാമൻ നായർ</strong><span>·</span>ചമ്മന്നൂർ</p>
+        <div class="story-content">
+          <p>ഘോഷയാത്ര കാണുന്നതിനും മുമ്പേ ചെണ്ടയുടെ ശബ്ദം ഞാൻ കേൾക്കുമായിരുന്നു. അക്കാലത്ത് ഗ്രാമം മുഴുവൻ ഒരുമിച്ചാണ് ഉണർന്നിരുന്നത്. ചെറിയ വിളക്കുകളുമേന്തി എല്ലാ ദിക്കിൽ നിന്നും ആളുകൾ നടന്നെത്തും, അന്നത്തെ ആഘോഷങ്ങളെക്കുറിച്ച് വർത്തമാനം പറഞ്ഞുകൊണ്ട്...</p>
+          <div class="story-extra"><div>
+            <p>പഴയ കുളക്കരയിലായിരുന്നു എല്ലാവരും ഒത്തുകൂടിയിരുന്നത്. കുട്ടികൾ തിരക്കിനു മുകളിലൂടെ കാണാൻ കരയുടെ അരികിൽ ഇടം പിടിക്കും; മുതിർന്നവർ മരച്ചുവട്ടിലെ പതിവ് സ്ഥലങ്ങളിലും.</p>
+            <p>വാഹനങ്ങൾ കുറവായിരുന്നു, ഉച്ചഭാഷിണികളും കുറവ്, ഒരുപക്ഷേ ശ്രദ്ധ തെറ്റിക്കുന്ന കാര്യങ്ങളും കുറവ്. എങ്കിലും ആ പ്രഭാതത്തിന് എന്തോ ഒരു വലിപ്പമുണ്ടായിരുന്നു.</p>
+            <p>ഇന്നും ദൂരെ നിന്ന് ആദ്യത്തെ ചെണ്ടമേളം കേൾക്കുമ്പോൾ ഞാൻ ആ പ്രഭാതങ്ങളിലേക്ക് മടങ്ങിപ്പോകും. ഗ്രാമം മാറി, പക്ഷേ ആ ശബ്ദം മാറിയിട്ടില്ല.</p>
+          </div></div>
+        </div>
+        <button class="expand-story" type="button" aria-expanded="false"><span>പൂർണ്ണ കഥ വായിക്കൂ</span><span class="expand-icon">+</span></button>
+      </article>
+
+      <article class="story-card reveal" style="--c:#2f8f6b">
+        <div class="story-meta"><span class="story-type">ഗ്രാമകഥ</span><span class="story-year">2026</span></div>
+        <h3>വീടിനടുത്തെ അവസാനത്തെ നെൽപ്പാടം</h3>
+        <p class="story-by"><strong>ലീല കൃഷ്ണൻ</strong><span>·</span>ചമ്മന്നൂർ</p>
+        <div class="story-content">
+          <p>ആദ്യമഴ പെയ്താൽ എല്ലായിടത്തും വെള്ളം നിറയുമായിരുന്നു. പാടം എപ്പോൾ ഒരുങ്ങുമെന്ന് എന്റെ അമ്മയ്ക്ക് കൃത്യമായി അറിയാമായിരുന്നു; മണ്ണിന്റെ നിറം നോക്കി ആ വർഷം വിളവ് നന്നാകുമോ എന്ന് അച്ഛനും പറയുമായിരുന്നു.</p>
+          <div class="story-extra"><div>
+            <p>ഇന്ന് ആ പാടത്തിന്റെ ഭൂരിഭാഗവും വീടുകളായി മാറി. വീടിനു പിന്നിൽ ഒരു ചെറിയ കണ്ടം ഇപ്പോഴും ഞങ്ങൾക്കുണ്ട്, എല്ലാ വർഷവും അതിൽ കൃഷിയിറക്കാൻ ഞങ്ങൾ ശ്രമിക്കും.</p>
+            <p>അധികമൊന്നുമില്ല, പക്ഷേ പച്ചനാമ്പുകൾ തലനീട്ടുമ്പോൾ ഞാൻ ഓർക്കുന്ന ചമ്മന്നൂരായി ആ സ്ഥലം തോന്നും.</p>
+          </div></div>
+        </div>
+        <button class="expand-story" type="button" aria-expanded="false"><span>പൂർണ്ണ കഥ വായിക്കൂ</span><span class="expand-icon">+</span></button>
+      </article>
+
+      <article class="story-card poem-card reveal" style="--c:#7c5cff">
+        <div class="story-meta"><span class="story-type">കവിത</span><span class="story-year">2026</span></div>
+        <h3>മഴയ്ക്കു ശേഷം എന്റെ ഗ്രാമം</h3>
+        <p class="story-by"><strong>അനിത മേനോൻ</strong><span>·</span>ചമ്മന്നൂർ</p>
+        <div class="poem">
+          <p>മഴയ്ക്കു ശേഷം<br>തോട് ആകാശത്തെ ഓർത്തെടുക്കുന്നു.<br>തെങ്ങോലകൾ മന്ത്രിക്കുന്നു<br>ശാന്തമായ വഴിക്കു മുകളിൽ.</p>
+          <div class="story-extra"><div>
+            <p>എവിടെയോ ഒരു സൈക്കിൾ കടന്നുപോകുന്നു,<br>ഒരു കെറ്റിൽ പാടിത്തുടങ്ങുന്നു,<br>ഗ്രാമം പതുക്കെ<br>നനഞ്ഞ പച്ചക്കണ്ണുകൾ തുറക്കുന്നു.</p>
+          </div></div>
+        </div>
+        <button class="expand-story" type="button" aria-expanded="false"><span>പൂർണ്ണ കവിത വായിക്കൂ</span><span class="expand-icon">+</span></button>
+      </article>
+
+      <article class="story-card reveal" style="--c:#00a6b8">
+        <div class="story-meta"><span class="story-type">ഓർമ്മ</span><span class="story-year">2025</span></div>
+        <h3>ഓടിട്ട മേൽക്കൂരയ്ക്കു കീഴിലെ സ്കൂൾ</h3>
+        <p class="story-by"><strong>ജോസഫ് മാത്യു</strong><span>·</span>ചമ്മന്നൂർ</p>
+        <div class="story-content">
+          <p>ഞങ്ങളുടെ ക്ലാസ്സ്മുറിയിൽ രണ്ടു ജനലുകളും മൂന്ന് നീണ്ട ബെഞ്ചുകളും, ഒരിക്കലും പൂർണ്ണമായി കറുക്കാത്ത ഒരു ബ്ലാക്ക്ബോർഡും ഉണ്ടായിരുന്നു. അന്ന് ചൂടിനെക്കുറിച്ച് ഞങ്ങൾ പരാതി പറഞ്ഞു. ഇപ്പോൾ, വിചിത്രമെന്നു പറയട്ടെ, എനിക്കതിനെ മിസ്സ് ചെയ്യുന്നു.</p>
+          <div class="story-extra"><div>
+            <p>ഓരോ തലമുറയും ആ പഴയ കെട്ടിടത്തിൽ എന്തെങ്കിലുമൊന്ന് അവശേഷിപ്പിക്കുന്നതായി തോന്നും. ബെഞ്ചുകളിൽ കോറിയിട്ട പേരുകൾ, ചുവരുകളിലെ ഫോട്ടോകൾ, പഴയ കൂട്ടുകാർ കണ്ടുമുട്ടുമ്പോഴെല്ലാം തിരികെയെത്തുന്ന ഓർമ്മകൾ.</p>
+          </div></div>
+        </div>
+        <button class="expand-story" type="button" aria-expanded="false"><span>പൂർണ്ണ കഥ വായിക്കൂ</span><span class="expand-icon">+</span></button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="marquee rev">
+  <div class="track">
+    <span class="out">ക്ഷേത്രക്കുളം</span><span>മഴക്കാലം</span><span class="out">തെങ്ങിൻതോപ്പ്</span><span>വീട്</span>
+    <span class="out">ക്ഷേത്രക്കുളം</span><span>മഴക്കാലം</span><span class="out">തെങ്ങിൻതോപ്പ്</span><span>വീട്</span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal right"><p class="tag">കണ്ടുനോക്കൂ</p><h2>ഗ്രാമ <span class="grad">ഗാലറി</span></h2></div>
+      <span class="note reveal">വലുതായി കാണാൻ ചിത്രത്തിൽ തൊടൂ</span>
+    </div>
+    <div class="gallery-grid">
+      <article class="gallery-card reveal" data-full="pond.jpg" style="--bg:linear-gradient(135deg,#00a6b8,#2f8f6b)">
+        <img src="pond.jpg" alt="ക്ഷേത്ര റോഡിനരികിലെ കുളം" loading="lazy" onerror="this.style.display='none'">
+        <div class="shade"></div>
+        <div class="cap"><span>01</span><h3>കുളം</h3><p>ജുമാ മസ്ജിദ് റോഡിനരികെ, ചമ്മന്നൂർ.</p></div>
+      </article>
+      <article class="gallery-card reveal" data-full="pooram.jpg" style="--bg:linear-gradient(135deg,#ff4d6d,#e0a82e)">
+        <img src="pooram.jpg" alt="ചമ്മന്നൂരിലെ പൂരാഘോഷം" loading="lazy" onerror="this.style.display='none'">
+        <div class="shade"></div>
+        <div class="cap"><span>02</span><h3>പൂരം</h3><p>പാരമ്പര്യത്തിന്റെ ആഘോഷം.</p></div>
+      </article>
+      <article class="gallery-card reveal" data-full="kunn.jpg" style="--bg:linear-gradient(135deg,#7c5cff,#00a6b8)">
+        <img src="kunn.jpg" alt="പണ്ടത്തെ ഗ്രാമദൃശ്യം" loading="lazy" onerror="this.style.display='none'">
+        <div class="shade"></div>
+        <div class="cap"><span>03</span><h3>ഗ്രാമത്തിലെ കുന്നുകൾ</h3><p>പണ്ടൊരു കാലത്ത്.</p></div>
+      </article>
+      <article class="gallery-card reveal" data-full="rain.jpg" style="--bg:linear-gradient(135deg,#2f8f6b,#b24e2c)">
+        <img src="rain.jpg" alt="മഴ പെയ്യുന്ന ഗ്രാമദൃശ്യം" loading="lazy" onerror="this.style.display='none'">
+        <div class="shade"></div>
+        <div class="cap"><span>04</span><h3>മഴക്കാലം</h3><p>ഗ്രാമം പച്ചപ്പണിയുമ്പോൾ.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESSES -->
+<section id="businesses">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal left"><p class="tag">നാടിനെ പിന്തുണയ്ക്കൂ</p><h2>ചമ്മന്നൂരിൽ <span class="grad">നിർമ്മിച്ചത്</span></h2></div>
+      <span class="note reveal">ചെറുകിട സംരംഭങ്ങൾ · നാട്ടിലെ കഴിവുകൾ</span>
+    </div>
+    <p class="business-intro reveal">ചമ്മന്നൂരിനെ സവിശേഷമാക്കുന്ന മനുഷ്യരെയും ചെറുകിട സംരംഭങ്ങളെയും പരിചയപ്പെടൂ — മൈലാഞ്ചി കലാകാരന്മാർ, ഹോം ബേക്കർമാർ, തയ്യൽക്കാർ, അധ്യാപകർ, കർഷകർ, സ്വതന്ത്ര സേവനദാതാക്കൾ എന്നിങ്ങനെ.</p>
+
+    <div class="business-grid">
+      <a href="fashion.html" class="business-card reveal" style="--c:#ff4d6d">
+        <span class="business-icon">✦</span>
+        <div><span class="business-category">ഡിസൈനർമാർ</span><h3>ഫാഷൻ ഡിസൈനർമാർ</h3><p>ഏത് അവസരത്തിനും ഇണങ്ങുന്ന കസ്റ്റം വസ്ത്രരൂപകൽപ്പനകൾ.</p></div>
+      </a>
+      <a href="cake.html" class="business-card reveal" style="--c:#e0a82e">
+        <span class="business-icon">◇</span>
+        <div><span class="business-category">ഭക്ഷണം &amp; ബേക്കിംഗ്</span><h3>ഹോം ബേക്കർമാർ</h3><p>ചമ്മന്നൂരിൽ ഉണ്ടാക്കിയ പുതുമയുള്ള കേക്കുകൾ, കപ്പ്കേക്കുകൾ, മധുരപലഹാരങ്ങൾ.</p></div>
+      </a>
+      <a href="makeup.html" class="business-card reveal" style="--c:#7c5cff">
+        <span class="business-icon">⌂</span>
+        <div><span class="business-category">സേവനങ്ങൾ</span><h3>മേക്കപ്പ് ആർട്ടിസ്റ്റുകൾ</h3><p>വിവാഹത്തിനും വിശേഷാവസരങ്ങൾക്കും പ്രൊഫഷണൽ മേക്കപ്പിന് ബ്യൂട്ടീഷ്യൻമാർ.</p></div>
+      </a>
+      <a href="gift.html" class="business-card reveal" style="--c:#2f8f6b">
+        <span class="business-icon">❋</span>
+        <div><span class="business-category">കൈത്തൊഴിൽ &amp; സമ്മാനങ്ങൾ</span><h3>സംരംഭകർ</h3><p>സമ്മാനങ്ങൾ, കൈകൊണ്ടുണ്ടാക്കിയ ഉൽപ്പന്നങ്ങൾ, വസ്ത്രങ്ങൾ, കരകൗശലം, പരമ്പരാഗത ഇനങ്ങൾ.</p></div>
+      </a>
+    </div>
+
+    <div class="business-cta dark reveal">
+      <div class="orb o1"></div><div class="orb o2"></div>
+      <p class="tag">നിങ്ങൾ ഒരു സംരംഭകനാണോ?</p>
+      <h3>നിങ്ങളുടെ പ്രവൃത്തി നാട്ടുകാരെ അറിയിക്കൂ.</h3>
+      <p>നിങ്ങളുടെ ചെറുകിട സംരംഭം ഈ കമ്മ്യൂണിറ്റി ഡയറക്ടറിയിൽ ചേർക്കൂ. പേര്, സേവനം, സ്ഥലം, ബന്ധപ്പെടേണ്ട വിവരങ്ങൾ എന്നിവ പങ്കിടൂ.</p>
+
+      <form class="form" id="businessForm">
+        <div class="form-row">
+          <div class="field"><label for="businessName">സംരംഭത്തിന്റെ / ഉടമയുടെ പേര്</label><input type="text" id="businessName" placeholder="ഉദാ. അമീനയുടെ മൈലാഞ്ചി" required></div>
+          <div class="field"><label for="businessType">സംരംഭത്തിന്റെ തരം</label><input type="text" id="businessType" placeholder="ഉദാ. മൈലാഞ്ചി കലാകാരി" required></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="businessLocation">സ്ഥലം</label><input type="text" id="businessLocation" placeholder="ഉദാ. ചമ്മന്നൂർ ക്ഷേത്രത്തിനടുത്ത്" required></div>
+          <div class="field"><label for="businessPhone">ഫോൺ / വാട്സാപ്പ്</label><input type="tel" id="businessPhone" placeholder="നിങ്ങളുടെ നമ്പർ" required></div>
+        </div>
+        <div class="field"><label for="businessDescription">നിങ്ങളുടെ സംരംഭത്തെക്കുറിച്ച് പറയൂ</label><textarea id="businessDescription" placeholder="നിങ്ങൾ എന്തെല്ലാം നൽകുന്നു?" required></textarea></div>
+        <button type="submit" class="wa-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
+          എന്റെ സംരംഭം ചേർക്കൂ
+        </button>
+        <span class="form-note">ചേർക്കുന്നതിനു മുമ്പ് പരിശോധിക്കാനായി നിങ്ങളുടെ വിവരങ്ങൾ വാട്സാപ്പിൽ തുറക്കും.</span>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section id="voices">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal right"><p class="tag">വാമൊഴി ചരിത്രം</p><h2>നമ്മുടെ <span class="grad">മുതിർന്നവർ</span> പറയുന്നു</h2></div>
+    </div>
+    <div class="voice reveal">
+      <span class="qm">“</span>
+      <div>
+        <blockquote>ഞങ്ങളുടെ കാലത്ത് വൈകുന്നേരം വൈകുംവരെ വൈദ്യുതി ഇല്ലായിരുന്നു. മണ്ണെണ്ണ വിളക്കിന്റെ വെളിച്ചത്തിലാണ് ഞങ്ങൾ പഠിച്ചത്, എന്നിട്ടും ഞങ്ങളുടെ വീട്ടിൽ ആരും പരീക്ഷയിൽ തോറ്റിട്ടില്ല.</blockquote>
+        <cite><b>കുഞ്ഞുകൃഷ്ണൻ നായർ</b>, 82 — കർഷകൻ, ചമ്മന്നൂർ</cite>
+      </div>
+    </div>
+    <div class="voice reveal">
+      <span class="qm">“</span>
+      <div>
+        <blockquote>ക്ഷേത്രത്തിനടുത്തെ കുളം ഏറ്റവും കടുത്ത വേനലിലും വറ്റിയിരുന്നില്ല. ആ മണ്ണിനെത്തന്നെ ദേവി അനുഗ്രഹിച്ചിട്ടുണ്ടെന്ന് എന്റെ മുത്തശ്ശി പറയുമായിരുന്നു.</blockquote>
+        <cite><b>ദേവകി അമ്മ</b>, 76 — വീട്ടമ്മ, പുന്നയൂർക്കുളം</cite>
+      </div>
+    </div>
+    <div class="voice reveal">
+      <span class="qm">“</span>
+      <div>
+        <blockquote>അടുത്തുള്ള സ്കൂളിലെത്താൻ ഞങ്ങൾ നാലു മൈൽ നടന്നു. ആരും പരാതി പറഞ്ഞില്ല — അതായിരുന്നു അന്നത്തെ രീതി, പോകാൻ കഴിഞ്ഞതിൽ ഞങ്ങൾ സന്തോഷിക്കുകയും ചെയ്തു.</blockquote>
+        <cite><b>രാഘവൻ മാസ്റ്റർ</b>, 79 — റിട്ട. അധ്യാപകൻ</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBMIT -->
+<section id="submit">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal left"><p class="tag">വാട്സാപ്പ് വഴി അയക്കാം</p><h2>ലേഖനം <span class="grad">അയക്കൂ</span></h2></div>
+    </div>
+    <p class="reveal" style="color:var(--muted);max-width:56ch">പങ്കിടാൻ ഒരു കഥയോ ഓർമ്മയോ നാട്ടുവാർത്തയോ ഉണ്ടോ? ഇത് പൂരിപ്പിച്ചാൽ അയയ്ക്കാൻ തയ്യാറായ സന്ദേശവുമായി വാട്സാപ്പ് തുറക്കും.</p>
+    <form class="form reveal" id="articleForm">
+      <div class="field"><label for="authorName">നിങ്ങളുടെ പേര്</label><input type="text" id="authorName" placeholder="ഉദാ. സുരേഷ്, ചമ്മന്നൂർ" required></div>
+      <div class="field"><label for="articleTitle">ലേഖനത്തിന്റെ തലക്കെട്ട്</label><input type="text" id="articleTitle" placeholder="ഉദാ. ഈ മഴക്കാലത്തെ ക്ഷേത്രക്കുളം" required></div>
+      <div class="field"><label for="articleBody">നിങ്ങളുടെ ലേഖനം</label><textarea id="articleBody" placeholder="ഇവിടെ നിങ്ങളുടെ കഥ എഴുതൂ..." required></textarea></div>
+      <button type="submit" class="wa-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
+        വാട്സാപ്പിൽ അയക്കൂ
+      </button>
+      <span class="form-note">സന്ദേശം തയ്യാറാക്കിയ നിലയിൽ വാട്സാപ്പ് തുറക്കും — അവിടെ നിന്ന് അയച്ചാൽ മതി.</span>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="cta reveal dark" id="contact">
+  <div class="blob b1" style="opacity:.35;filter:blur(60px)"></div>
+  <div class="blob b2" style="opacity:.3;filter:blur(60px)"></div>
+  <h2>ഒരു കഥയോ തിരുത്തോ ചോദ്യമോ ഉണ്ടോ?</h2>
+  <p>ഇത് ഒരു കൂട്ടായ്മയുടെ ശ്രമമാണ് — പങ്കാളിയാകാൻ താൽപര്യമുണ്ടെങ്കിൽ ബന്ധപ്പെടൂ.</p>
+  <a href="https://wa.me/918086797099" class="btn magnetic">വാട്സാപ്പിൽ ബന്ധപ്പെടൂ</a>
+</div>
+
+<footer>
+  <span>© 2026 ചമ്മന്നൂർ, പുന്നയൂർക്കുളം</span>
+  <span>ഗ്രാമത്തിനായി സ്നേഹത്തോടെ നിർമ്മിച്ചത് — റിഷീൻ ദിൽഷാദ്</span>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="അടയ്ക്കുക">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+  const WHATSAPP_NUMBER = "918086797099";
+
+  /* header + progress */
+  const header = document.getElementById('siteHeader');
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', scrollY > 12);
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, {passive:true});
+
+  /* mobile nav */
+  const navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', () => {
+    const open = header.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('#siteNav a').forEach(a => a.addEventListener('click', () => {
+    header.classList.remove('open'); navToggle.setAttribute('aria-expanded','false');
+  }));
+
+  /* reveal on scroll */
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), {threshold:.12, rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i) => {
+    el.style.transitionDelay = (i % 4) * 90 + 'ms';
+    io.observe(el);
+  });
+
+  /* story expand */
+  document.querySelectorAll('.expand-story').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.story-card');
+      const open = card.classList.toggle('expanded');
+      btn.setAttribute('aria-expanded', open);
+      const isPoem = card.classList.contains('poem-card');
+      btn.querySelector('span:first-child').textContent = open ? 'കുറച്ചു കാണിക്കൂ' : (isPoem ? 'പൂർണ്ണ കവിത വായിക്കൂ' : 'പൂർണ്ണ കഥ വായിക്കൂ');
+    });
+  });
+
+  /* lightbox */
+  const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightboxImg');
+  document.querySelectorAll('.gallery-card').forEach(c => c.addEventListener('click', () => {
+    const img = c.querySelector('img');
+    if (img.style.display === 'none') return;
+    lbImg.src = c.dataset.full; lbImg.alt = img.alt; lb.classList.add('open');
+  }));
+  const closeLb = () => lb.classList.remove('open');
+  document.getElementById('lightboxClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+  /* WhatsApp: business */
+  document.getElementById('businessForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const msg = `ചമ്മന്നൂരിലെ പുതിയ പ്രാദേശിക സംരംഭം\n\nസംരംഭം / ഉടമ: ${v('businessName')}\nസംരംഭത്തിന്റെ തരം: ${v('businessType')}\nസ്ഥലം: ${v('businessLocation')}\nഫോൺ / വാട്സാപ്പ്: ${v('businessPhone')}\n\nസംരംഭത്തെക്കുറിച്ച്:\n${v('businessDescription')}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(msg), '_blank');
+  });
+
+  /* WhatsApp: article */
+  document.getElementById('articleForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const msg = `ഗ്രാമ ബ്ലോഗിലേക്കുള്ള പുതിയ ലേഖനം\n\nഅയച്ചത്: ${v('authorName')}\nതലക്കെട്ട്: ${v('articleTitle')}\n\n${v('articleBody')}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(msg), '_blank');
+  });
+
+  /* cursor follower */
+  const cur = document.getElementById('cursor');
+  let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop(){
+    cx += (mx - cx) * .18; cy += (my - cy) * .18;
+    cur.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.story-card,.gallery-card,.business-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('big'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+  });
+
+  /* hero parallax */
+  const shapes = document.querySelectorAll('.hero .shape');
+  addEventListener('mousemove', e => {
+    const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+    shapes.forEach(s => { const d = +s.dataset.depth || 20; s.style.translate = `${x*d}px ${y*d}px`; });
+  });
+  const blobs = document.querySelectorAll('.hero .blob');
+  addEventListener('scroll', () => blobs.forEach((b,i) => b.style.translate = `0 ${scrollY * (.12 + i * .06)}px`), {passive:true});
+
+  /* magnetic buttons */
+  document.querySelectorAll('.magnetic').forEach(b => {
+    b.addEventListener('mousemove', e => {
+      const r = b.getBoundingClientRect();
+      b.style.transform = `translate(${(e.clientX - r.left - r.width/2) * .25}px,${(e.clientY - r.top - r.height/2) * .35}px)`;
+    });
+    b.addEventListener('mouseleave', () => b.style.transform = '');
+  });
+</script>
+</body>
+</html>
