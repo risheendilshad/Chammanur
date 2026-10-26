@@ -15,56 +15,6 @@
     --serif:'Noto Serif Malayalam',Georgia,serif;
     --sans:'Noto Sans Malayalam',system-ui,sans-serif;
   }
-  .developer-card {
-  max-width: 420px;
-  margin: 24px auto;
-  padding: 20px 24px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.developer-card h3 {
-  margin: 0 0 6px;
-  font-size: 1.25rem;
-  color: #1f2937;
-}
-
-.developer-card p {
-  margin: 0 0 12px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #4b5563;
-}
-
-.developer-card .enquiry-text {
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.wa-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #25d366;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 999px;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.wa-btn:hover {
-  background: #1ebe5b;
-  transform: translateY(-1px);
-}
-
-.wa-btn:focus-visible {
-  outline: 3px solid #1f2937;
-  outline-offset: 2px;
-}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:#fff;color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -98,6 +48,19 @@
   .founder h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;line-height:1.4;position:relative}
   .founder .role{display:block;font-size:.82rem;font-weight:700;color:var(--c);margin-bottom:2px;position:relative}
   .founder p{color:var(--muted);font-size:.93rem;line-height:1.7;margin-top:4px;position:relative}
+
+  /* WhatsApp enquiry button */
+  .wa-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:12px;padding:9px 18px;
+    background:#25d366;color:#fff;
+    font-family:var(--sans);font-weight:700;font-size:.88rem;
+    text-decoration:none;border-radius:999px;
+    position:relative;
+    transition:background .25s,transform .25s var(--ease),box-shadow .25s;
+  }
+  .wa-btn:hover{background:#1ebe5b;transform:translateY(-2px);box-shadow:0 10px 22px rgba(37,211,102,.35)}
+  .wa-btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 
   @media(max-width:860px){
     section{padding:80px 6vw}
@@ -137,12 +100,12 @@
           <div>
             <span class="role">Idea · Creation</span>
             <h3>Risheen Dilshad</h3>
-<p>A Chammanur native Software Engineer, the Developer of this website.</p>
-<p>
-  For website development enquiries, contact me on WhatsApp:
-  <a href="https://wa.me/918086797099?text=Hi%20Risheen%2C%20I%20would%20like%20to%20enquire%20about%20website%20development."
-     target="_blank" rel="noopener">8086797099</a>
-</p>
+            <p>A Chammanur native Software Engineer, the Developer of this website.For Website enquiries contact. </p>
+            <a class="wa-btn"
+               href="https://wa.me/918086797099?text=Hi%20Risheen%2C%20I%20would%20like%20to%20enquire%20about%20website%20development."
+               target="_blank" rel="noopener">
+              Website enquiries
+            </a>
           </div>
         </div>
         <div class="founder reveal right" style="--c:#2f8f6b">
