@@ -272,6 +272,7 @@
   .tile h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;line-height:1.5;position:relative}
 
   button.tile{font:inherit;color:inherit;cursor:pointer;width:100%}
+  button.business-card{font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;align-items:start}
 
   .sheet-bg{position:fixed;inset:0;z-index:110;background:rgba(14,20,18,.6);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
   .sheet-bg.open{opacity:1;pointer-events:auto}
@@ -551,28 +552,28 @@
     <p class="business-intro reveal">ചമ്മന്നൂരിനെ സവിശേഷമാക്കുന്ന മനുഷ്യരെയും ചെറുകിട സംരംഭങ്ങളെയും പരിചയപ്പെടൂ — മൈലാഞ്ചി കലാകാരന്മാർ, ഹോം ബേക്കർമാർ, തയ്യൽക്കാർ, അധ്യാപകർ, കർഷകർ, സ്വതന്ത്ര സേവനദാതാക്കൾ എന്നിങ്ങനെ.</p>
 
     <div class="business-grid">
-      <a href="fashion.html" class="business-card reveal" style="--c:#ff4d6d">
+      <button type="button" data-biz="fashion" class="business-card reveal" style="--c:#ff4d6d">
         <span class="business-icon">✦</span>
         <div><span class="business-category">ഡിസൈനർമാർ</span><h3>ഫാഷൻ ഡിസൈനർമാർ</h3><p>ഏത് അവസരത്തിനും ഇണങ്ങുന്ന കസ്റ്റം വസ്ത്രരൂപകൽപ്പനകൾ.</p></div>
-      </a>
-      <a href="cake.html" class="business-card reveal" style="--c:#e0a82e">
+      </button>
+      <button type="button" data-biz="cake" class="business-card reveal" style="--c:#e0a82e">
         <span class="business-icon">◇</span>
         <div><span class="business-category">ഭക്ഷണം &amp; ബേക്കിംഗ്</span><h3>ഹോം ബേക്കർമാർ</h3><p>ചമ്മന്നൂരിൽ ഉണ്ടാക്കിയ പുതുമയുള്ള കേക്കുകൾ, കപ്പ്കേക്കുകൾ, മധുരപലഹാരങ്ങൾ.</p></div>
-      </a>
-      <a href="makeup.html" class="business-card reveal" style="--c:#7c5cff">
+      </button>
+      <button type="button" data-biz="makeup" class="business-card reveal" style="--c:#7c5cff">
         <span class="business-icon">⌂</span>
         <div><span class="business-category">സേവനങ്ങൾ</span><h3>മേക്കപ്പ് ആർട്ടിസ്റ്റുകൾ</h3><p>വിവാഹത്തിനും വിശേഷാവസരങ്ങൾക്കും പ്രൊഫഷണൽ മേക്കപ്പിന് ബ്യൂട്ടീഷ്യൻമാർ.</p></div>
-      </a>
-      <a href="gift.html" class="business-card reveal" style="--c:#2f8f6b">
+      </button>
+      <button type="button" data-biz="gift" class="business-card reveal" style="--c:#2f8f6b">
         <span class="business-icon">❋</span>
         <div><span class="business-category">കൈത്തൊഴിൽ &amp; സമ്മാനങ്ങൾ</span><h3>സംരംഭകർ</h3><p>സമ്മാനങ്ങൾ, കൈകൊണ്ടുണ്ടാക്കിയ ഉൽപ്പന്നങ്ങൾ, വസ്ത്രങ്ങൾ, കരകൗശലം, പരമ്പരാഗത ഇനങ്ങൾ.</p></div>
-      </a>
+      </button>
     </div>
 
     <div class="business-cta dark reveal">
       <div class="orb o1"></div><div class="orb o2"></div>
-      <p class="tag">നിങ്ങൾ ഒരു സംരംഭകനാണോ?</p>
-      <h3>നിങ്ങളുടെ പ്രവൃത്തി നാട്ടുകാരെ അറിയിക്കൂ.</h3>
+      <p class="tag"></p>
+      <h3>നിങ്ങൾ ഒരു സംരംഭകനാണോ?</h3>
       <p>നിങ്ങളുടെ ചെറുകിട സംരംഭം ഈ കമ്മ്യൂണിറ്റി ഡയറക്ടറിയിൽ ചേർക്കൂ. പേര്, സേവനം, സ്ഥലം, ബന്ധപ്പെടേണ്ട വിവരങ്ങൾ എന്നിവ പങ്കിടൂ.</p>
 
       <form class="form" id="businessForm">
@@ -797,6 +798,15 @@ const WA_PROMPT = {
 /* placeholder list for worker categories (replace with real names + numbers) */
 const PH = () => [{name:'പേര് ചേർക്കുക',phone:''},{name:'പേര് ചേർക്കുക',phone:''}];
 
+/* "ചമ്മന്നൂരിൽ നിർമ്മിച്ചത്" business cards: each opens a call box.
+   Add real entries like {name:'അമീന', phone:'919xxxxxxxxx'} (country code + number) */
+const BUSINESSES = {
+  fashion:{i:'👗', c:'#ff4d6d', name:'ഫാഷൻ ഡിസൈനർമാർ', people:PH()},
+  cake:   {i:'🎂', c:'#e0a82e', name:'ഹോം ബേക്കർമാർ',   people:PH()},
+  makeup: {i:'💄', c:'#7c5cff', name:'മേക്കപ്പ് ആർട്ടിസ്റ്റുകൾ', people:PH()},
+  gift:   {i:'🎁', c:'#2f8f6b', name:'സംരംഭകർ',          people:PH()}
+};
+
 /* First entry = tab that opens by default */
 const SECTIONS = [
   
@@ -1020,6 +1030,9 @@ const SECTIONS = [
   document.querySelectorAll('.tile[data-sec]').forEach(t => t.addEventListener('click', () => {
     const sec = SECTIONS.find(s => s.id === t.dataset.sec);
     openSheet(sec.cards[+t.dataset.idx]);
+  }));
+  document.querySelectorAll('[data-biz]').forEach(b => b.addEventListener('click', () => {
+    if (BUSINESSES[b.dataset.biz]) openSheet(BUSINESSES[b.dataset.biz]);
   }));
   document.getElementById('sheetClose').addEventListener('click', closeSheet);
   sheetBg.addEventListener('click', e => { if (e.target === sheetBg) closeSheet(); });
