@@ -32,8 +32,8 @@
   .mark{font-family:var(--serif);font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:10px}
   .mark i{width:12px;height:12px;border-radius:50%;background:var(--clay);display:block;position:relative}
   .mark i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--clay);animation:ping 1.8s ease-out infinite}
-  nav.site ul{display:flex;gap:30px;list-style:none}
-  nav.site a{position:relative;font-size:.95rem;font-weight:500;color:var(--muted);transition:color .2s}
+  nav.site ul{display:flex;gap:24px;list-style:none}
+  nav.site a{position:relative;font-size:.92rem;font-weight:500;color:var(--muted);transition:color .2s}
   nav.site a:hover{color:var(--ink)}
   nav.site a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--clay);transition:width .3s}
   nav.site a:hover::after{width:100%}
@@ -43,12 +43,12 @@
   header.site.open .nav-toggle span{background:transparent}
   header.site.open .nav-toggle span::before{top:0;transform:rotate(45deg)}
   header.site.open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
-  @media(max-width:760px){
+  @media(max-width:1100px){
     .nav-toggle{display:flex}
     nav.site{position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,.97);max-height:0;overflow:hidden;transition:max-height .35s var(--ease);border-bottom:1px solid var(--line)}
-    header.site.open nav.site{max-height:360px}
-    nav.site ul{flex-direction:column;gap:4px;padding:12px 6vw 22px}
-    nav.site a{display:block;padding:8px 0;font-size:1.05rem}
+    header.site.open nav.site{max-height:520px}
+    nav.site ul{flex-direction:column;gap:2px;padding:10px 6vw 20px}
+    nav.site a{display:block;padding:7px 0;font-size:1.05rem}
   }
 
   /* hero */
@@ -104,6 +104,7 @@
 
   /* sections */
   section{padding:110px 6vw;position:relative}
+  section[id]{scroll-margin-top:60px}
   .inner{max-width:1100px;margin:0 auto}
   .tag{font-weight:700;color:var(--clay);font-size:.9rem;margin-bottom:10px}
   h2{font-family:var(--serif);font-size:clamp(2rem,5vw,3.6rem);line-height:1.35;font-weight:800;max-width:860px}
@@ -210,14 +211,131 @@
   .cta .btn{background:#fff;color:var(--ink)}.cta .btn:hover{background:var(--gold)}
   footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:0 6vw 46px;color:var(--muted);font-size:.9rem}
 
+  /* ============ NEW: spotlight + tabbed directory ============ */
+  .spot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .spot-card{padding:30px;border-radius:28px;background:#fff;border:2px solid var(--line);position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .spot-card:first-child{grid-column:span 3;background:var(--ink);color:#fff;border-color:var(--ink)}
+  .spot-card:first-child p{color:rgba(255,255,255,.8)}
+  .spot-card::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:var(--c);top:-100px;right:-100px;opacity:.28}
+  .spot-card:hover{transform:translateY(-8px);box-shadow:0 26px 50px rgba(0,0,0,.12);border-color:var(--c)}
+  .spot-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;position:relative}
+  .spot-type{padding:3px 14px;border-radius:99px;background:var(--c);color:#fff;font-size:.8rem;font-weight:700}
+  .spot-date{font-size:.85rem;font-weight:700;opacity:.8}
+  .spot-card h3{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.45;font-weight:800;margin-bottom:8px;position:relative}
+  .spot-card:not(:first-child) h3{font-size:1.25rem;font-weight:600}
+  .spot-card p{position:relative;color:var(--muted)}
+
+  .dir-add{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:20px 24px;border-radius:24px;background:var(--ink);color:#fff}
+  .dir-add p{flex:1;min-width:200px;opacity:.9;font-size:.95rem}
+  .dir-add .wa-btn{align-self:auto}
+
+  #directory .head{margin-bottom:28px}
+  .tabs-wrap{margin-bottom:26px}
+  .tabs{display:flex;flex-wrap:wrap;gap:10px}
+  .tab{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:18px;border:2px solid var(--line);background:#fff;font:inherit;font-size:.92rem;font-weight:600;line-height:1.35;cursor:pointer;color:var(--ink);text-align:center;transition:background .2s,color .2s,border-color .2s,transform .2s}
+  .tab .te{font-size:1.15rem;line-height:1}
+  .tab:hover{border-color:var(--ink)}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .panel{animation:panelIn .35s var(--ease) both}
+  @keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .panel-head{margin-bottom:18px}
+  .panel-head h3{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);line-height:1.4;font-weight:800}
+  .panel-head p{color:var(--muted);font-size:.95rem;max-width:62ch}
+
+  .dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .dir-card{padding:24px;border-radius:24px;border:2px solid var(--line);background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:5px;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .dir-card::before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:var(--c);top:-85px;right:-85px;opacity:.18;transition:transform .6s}
+  .dir-card:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:0 26px 50px rgba(0,0,0,.1);border-color:var(--c)}
+  .dir-card:hover::before{transform:scale(3)}
+  .dir-icon{width:50px;height:50px;border-radius:16px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:1.4rem;position:relative;margin-bottom:6px}
+  .dir-cat{font-size:.78rem;font-weight:700;color:var(--c);position:relative}
+  .dir-card h3{font-family:var(--serif);font-size:1.2rem;line-height:1.5;font-weight:600;position:relative}
+  .dir-card p{color:var(--muted);font-size:.92rem;line-height:1.65;position:relative}
+  .dir-sample{align-self:flex-start;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:99px;background:#fff3d1;color:#8a6410;position:relative}
+  .dir-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:12px;position:relative}
+  .dir-actions a{padding:7px 16px;border-radius:99px;font-size:.85rem;font-weight:700;border:2px solid var(--c);color:var(--c);transition:background .2s,color .2s}
+  .dir-actions a:hover{background:var(--c);color:#fff}
+
+  .emerg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+  .emerg-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:22px;border:2px solid var(--line);background:#fff;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  .emerg-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(0,0,0,.1);border-color:var(--c)}
+  .emerg-num{min-width:78px;text-align:center;padding:9px 8px;border-radius:16px;background:var(--c);color:#fff;font-weight:800;font-size:1.3rem;font-family:var(--serif)}
+  .emerg-card h3{font-size:1rem;font-weight:700;line-height:1.45}
+  .emerg-card p{font-size:.83rem;color:var(--muted);line-height:1.45}
+
+  .tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px 14px;border-radius:26px;border:2px solid var(--line);background:#fff;text-align:center;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .tile::before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:var(--c);top:-85px;right:-85px;opacity:.18;transition:transform .6s}
+  .tile:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:0 26px 50px rgba(0,0,0,.1);border-color:var(--c)}
+  .tile:hover::before{transform:scale(3)}
+  .tile .dir-icon{width:62px;height:62px;font-size:1.8rem;border-radius:20px;margin:0}
+  .tile h3{font-family:var(--serif);font-size:1.05rem;font-weight:600;line-height:1.5;position:relative}
+
+  button.tile{font:inherit;color:inherit;cursor:pointer;width:100%}
+
+  .sheet-bg{position:fixed;inset:0;z-index:110;background:rgba(14,20,18,.6);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+  .sheet-bg.open{opacity:1;pointer-events:auto}
+  .sheet{width:100%;max-width:560px;max-height:82vh;overflow-y:auto;background:#fff;border-radius:28px 28px 0 0;padding:22px 20px 30px;transform:translateY(40px);transition:transform .35s var(--ease)}
+  .sheet-bg.open .sheet{transform:none}
+  .sheet-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .sheet-head h3{flex:1;font-family:var(--serif);font-size:1.35rem;font-weight:800;line-height:1.4}
+  .sheet-close{width:38px;height:38px;flex:none;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:1.3rem;line-height:1;cursor:pointer;color:var(--ink)}
+  .sheet-list{display:grid;gap:10px}
+  .sheet-empty{color:var(--muted);font-size:.95rem}
+  @media(min-width:641px){.sheet-bg{align-items:center}.sheet{border-radius:28px}}
+
+  .call-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .call-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:22px;border:2px solid var(--line);background:#fff;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+  a.call-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(0,0,0,.1);border-color:var(--c)}
+  .call-card .dir-icon{margin:0;flex:none}
+  .call-card h3{font-family:var(--serif);font-size:1.08rem;font-weight:600;line-height:1.4}
+  .call-num{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.93rem;color:var(--c)}
+
+  @media(max-width:1000px){
+    .dir-grid,.emerg-grid,.call-grid{grid-template-columns:repeat(2,1fr)}
+    .tile-grid{grid-template-columns:repeat(3,1fr)}
+  }
+
   @media(max-width:860px){
-    section{padding:80px 6vw}
+    section{padding:60px 6vw}
     .story-grid,.gallery-grid,.business-grid{grid-template-columns:1fr}
     .story-card.featured{grid-column:span 1}
     .form-row{grid-template-columns:1fr}
     .business-cta{padding:30px 24px}
-    .gallery-card{height:280px}
+    .gallery-card{height:240px}
+    .head{margin-bottom:32px}
+    .business-intro{margin:-12px 0 28px}
+    .voice{padding:24px 0}
+    .cta{padding:70px 6vw}
   }
+
+  /* ---- phones: swipe carousels instead of long vertical lists ---- */
+  @media(max-width:640px){
+    #spotlight .head{margin-bottom:20px}
+    .tabs-wrap{margin-bottom:18px}
+    .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .tab{flex-direction:column;gap:4px;padding:10px 4px;border-radius:16px;font-size:.8rem;min-height:66px}
+    .tab .te{font-size:1.3rem}
+    .dir-grid,.spot-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -6vw;padding:2px 6vw 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .dir-grid::-webkit-scrollbar,.spot-grid::-webkit-scrollbar{display:none}
+    .dir-card{flex:0 0 78%;scroll-snap-align:center;padding:20px}
+    .spot-card{flex:0 0 86%;scroll-snap-align:center;padding:22px}
+    .spot-card:first-child{grid-column:auto}
+    .tile-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+    .tile{padding:20px 10px;gap:10px;border-radius:22px}
+    .tile .dir-icon{width:52px;height:52px;font-size:1.5rem}
+    .tile h3{font-size:.95rem}
+    .emerg-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .emerg-card{flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:18px}
+    .emerg-card p{display:none}
+    .emerg-card h3{font-size:.88rem}
+    .emerg-num{min-width:0;width:100%;font-size:1.15rem}
+    .call-grid{grid-template-columns:1fr;gap:10px}
+    .call-card{padding:12px 14px}
+    .dir-add{padding:16px 18px;margin-top:20px;gap:12px}
+    .panel-head p{font-size:.9rem}
+  }
+  @media(max-width:360px){.tabs{grid-template-columns:repeat(2,1fr)}}
 
   @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(8vw,6vh) scale(1.15)}66%{transform:translate(-4vw,10vh) scale(.92)}}
   @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-10vw,-8vh) scale(1.2)}}
@@ -253,11 +371,14 @@
   <nav class="site" id="siteNav">
     <ul>
       <li><a href="#writing">എഴുത്തുകൾ</a></li>
+      <li><a href="#spotlight">സ്പോട്ട്‌ലൈറ്റ്</a></li>
       <li><a href="#gallery">ഗാലറി</a></li>
       <li><a href="#businesses">സംരംഭങ്ങൾ</a></li>
+      <li><a href="#directory">ഡയറക്ടറി</a></li>
+      <li><a href="#directory" data-tab="emergency">അടിയന്തരം</a></li>
       <li><a href="#voices">ശബ്ദങ്ങൾ</a></li>
       <li><a href="#submit">അയക്കുക</a></li>
-       <li><a href="about.html">ആശയത്തിനു പിന്നിൽ</a></li>
+      <li><a href="about.html">ആശയത്തിനു പിന്നിൽ</a></li>
     </ul>
   </nav>
 </header>
@@ -372,10 +493,22 @@
 
 <div class="marquee rev">
   <div class="track">
-    <span class="out">ക്ഷേത്രക്കുളം</span><span>മഴക്കാലം</span><span class="out">തെങ്ങിൻതോപ്പ്</span><span>വീട്</span>
-    <span class="out">ക്ഷേത്രക്കുളം</span><span>മഴക്കാലം</span><span class="out">തെങ്ങിൻതോപ്പ്</span><span>വീട്</span>
+    <span class="out">In the Spotlight</span><span>In the Spotlight</span><span class="out">In the Spotlight</span><span>In the Spotlight</span>
+    <span class="out">In the Spotlight</span><span>In the Spotlight</span><span class="out">In the Spotlight</span><span>In the Spotlight</span>
   </div>
 </div>
+
+<!-- SPOTLIGHT -->
+<section id="spotlight">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal left"><p class="tag">അഭിമാന നിമിഷങ്ങൾ</p><h2>സ്പോട്ട്‌ലൈറ്റ് · <span class="grad">പരിപാടികളും നേട്ടങ്ങളും</span></h2></div>
+      <span class="note reveal">ഇവന്റുകൾ · പുരസ്കാരങ്ങൾ · വിജയങ്ങൾ</span>
+    </div>
+    <div class="spot-grid" id="spotlight-root"></div>
+    <div class="dir-add" id="spotlight-add"></div>
+  </div>
+</section>
 
 <!-- GALLERY -->
 <section id="gallery">
@@ -463,6 +596,18 @@
   </div>
 </section>
 
+<!-- DIRECTORY (tabbed: one category visible at a time) -->
+<section id="directory">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal left"><p class="tag">നാടിന്റെ വിവരങ്ങൾ</p><h2>ചമ്മന്നൂർ <span class="grad">ഡയറക്ടറി</span></h2></div>
+      <span class="note reveal">വിഭാഗം തിരഞ്ഞെടുക്കൂ</span>
+    </div>
+    <div class="tabs-wrap"><div class="tabs" id="tabs" role="tablist" aria-label="ഡയറക്ടറി വിഭാഗങ്ങൾ"></div></div>
+    <div id="panels"></div>
+  </div>
+</section>
+
 <!-- VOICES -->
 <section id="voices">
   <div class="inner">
@@ -526,6 +671,16 @@
   <span>© 2026 ചമ്മന്നൂർ, പുന്നയൂർക്കുളം</span>
   <span>ഗ്രാമത്തിനായി സ്നേഹത്തോടെ നിർമ്മിച്ചത് — റിഷീൻ ദിൽഷാദ്</span>
 </footer>
+
+<div class="sheet-bg" id="sheetBg" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3 id="sheetTitle"></h3>
+      <button type="button" class="sheet-close" id="sheetClose" aria-label="അടയ്ക്കുക">&times;</button>
+    </div>
+    <div class="sheet-list" id="sheetList"></div>
+  </div>
+</div>
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose" aria-label="അടയ്ക്കുക">&times;</button>
@@ -633,6 +788,259 @@
     });
     b.addEventListener('mouseleave', () => b.style.transform = '');
   });
+</script>
+
+<!-- ============ Spotlight + Directory ============ -->
+<script>
+/* ---------- DATA: edit here only. "sample:true" shows an "ഉദാഹരണം" badge. ---------- */
+const SPOTLIGHT = [
+  {type:'ഇവന്റ്', c:'#b24e2c', date:'ജനുവരി 16, 2027 · ശനി', title:'ചമ്മന്നൂർ ഫെസ്റ്റ് 2027', desc:'ഗ്രാമത്തിന്റെ ആഘോഷം — വിശദാംശങ്ങൾ ഉടൻ ഇവിടെ പ്രഖ്യാപിക്കും.'},
+  {type:'നേട്ടം', c:'#2f8f6b', date:'2026', title:'ഉന്നത വിജയം നേടിയ വിദ്യാർത്ഥികൾ', desc:'SSLC / പ്ലസ് ടു / ഡിഗ്രി പരീക്ഷകളിൽ തിളങ്ങിയ നമ്മുടെ കുട്ടികൾ.', sample:true},
+  {type:'ഇവന്റ്', c:'#7c5cff', date:'തീയതി ചേർക്കുക', title:'ക്ലബ് / ക്ഷേത്ര / പള്ളി പരിപാടി', desc:'നാട്ടിൽ നടക്കുന്ന പരിപാടികളുടെ വിവരങ്ങൾ ഇവിടെ ചേർക്കാം.', sample:true}
+];
+
+const WA_PROMPT = {
+  spotlight:'ചമ്മന്നൂർ സ്പോട്ട്‌ലൈറ്റിലേക്ക് ചേർക്കാൻ:\n\nപരിപാടി / നേട്ടം:\nതീയതി:\nവിവരണം:\nഅയച്ചത്:'
+};
+
+/* placeholder list for worker categories (replace with real names + numbers) */
+const PH = () => [{name:'പേര് ചേർക്കുക',phone:''},{name:'പേര് ചേർക്കുക',phone:''}];
+
+/* First entry = tab that opens by default */
+const SECTIONS = [
+  
+  { id:'workers', tab:'👷 തൊഴിലാളികൾ', title:'പ്രാദേശിക', grad:'തൊഴിലാളികൾ', note:'ഇലക്ട്രീഷ്യൻ · പ്ലംബർ · ഫോട്ടോഗ്രാഫർ · ട്യൂട്ടർ',
+    type:'tiles', noAdd:true,
+    cards:[
+      /* people: add real entries like {name:'സുരേഷ്', phone:'919xxxxxxxxx'} (country code + number) */
+      {i:'📐',c:'#b24e2c',name:'എഞ്ചിനീയർ / കോൺട്രാക്ടർ',people:PH()},
+      {i:'⚡',c:'#e0a82e',name:'ഇലക്ട്രീഷ്യൻ',people:PH()},
+      {i:'🚰',c:'#00a6b8',name:'പ്ലംബർ',people:PH()},
+      {i:'🪚',c:'#2f8f6b',name:'കാർപെന്റർ',people:PH()},
+      {i:'🎨',c:'#7c5cff',name:'പെയിന്റർ',people:PH()},
+      {i:'📷',c:'#ff4d6d',name:'ഫോട്ടോഗ്രാഫർ',people:PH()},
+      {i:'💻',c:'#2f6fed',name:'ഓൺലൈൻ ട്യൂട്ടർമാർ',people:PH()}
+    ]},
+  { id:'autos', tab:'🛺 ഓട്ടോ', title:'ഓട്ടോ', grad:'ഡ്രൈവർമാർ', note:'ഒറ്റ ക്ലിക്കിൽ വിളിക്കാം',
+    type:'calls', noAdd:true,
+    /* add real entries like: {i:'🛺',c:'#e0a82e',name:'സുരേഷ്',phone:'919xxxxxxxxx'} */
+    cards:[
+      {i:'🛺',c:'#e0a82e',name:'ഡ്രൈവറുടെ പേര്',phone:''},
+      {i:'🛺',c:'#00a6b8',name:'ഡ്രൈവറുടെ പേര്',phone:''},
+      {i:'🛺',c:'#7c5cff',name:'ഡ്രൈവറുടെ പേര്',phone:''}
+    ]},
+    { id:'emergency', tab:'🚨 അടിയന്തരം', title:'അടിയന്തര', grad:'നമ്പറുകൾ', note:'തൊട്ടാൽ വിളിക്കാം',
+    type:'emergency', noAdd:true,
+    cards:[
+      {n:'112',c:'#d62839',name:'എമർജൻസി (എല്ലാ സേവനങ്ങൾക്കും)',desc:'പോലീസ്, ഫയർ, ആംബുലൻസ് — ഒറ്റ നമ്പർ.'},
+      {n:'100',c:'#2f6fed',name:'പോലീസ്',desc:'അടിയന്തര പോലീസ് സഹായം.'},
+      {n:'108',c:'#2f8f6b',name:'ആംബുലൻസ്',desc:'അടിയന്തര മെഡിക്കൽ സഹായം.'},
+      {n:'101',c:'#e07a1f',name:'ഫയർ ഫോഴ്സ്',desc:'തീപിടുത്തം, രക്ഷാപ്രവർത്തനം.'},
+      {n:'1098',c:'#7c5cff',name:'ചൈൽഡ് ലൈൻ',desc:'കുട്ടികൾക്കുള്ള സഹായം.'},
+      {n:'181',c:'#ff4d6d',name:'വനിതാ ഹെൽപ്പ്‌ലൈൻ',desc:'സ്ത്രീകളുടെ സുരക്ഷയ്ക്കും സഹായത്തിനും.'}
+    ],
+    local:[
+      {i:'🚓',c:'#2f6fed',cat:'പോലീസ്',name:'പോലീസ് സ്റ്റേഷൻ',desc:'നമ്പർ ചേർക്കുക.',sample:true},
+      {i:'💡',c:'#e0a82e',cat:'KSEB',name:'ഇലക്ട്രിസിറ്റി ഓഫീസ്',desc:'നമ്പർ ചേർക്കുക.',sample:true},
+      {i:'🏥',c:'#2f8f6b',cat:'ആശുപത്രി',name:'അടുത്തുള്ള ആശുപത്രി',desc:'നമ്പർ ചേർക്കുക.',sample:true}
+    ]},
+  { id:'foods', tab:'🍛 ഭക്ഷണം', title:'നാടൻ', grad:'ഭക്ഷണം', note:'ഹോട്ടൽ · തട്ടുകട · കാറ്ററിംഗ്',
+    add:'ഭക്ഷണ സംരംഭം നടത്തുന്നുണ്ടോ? ചേർക്കൂ.',
+    cards:[
+      {i:'🍽️',c:'#b24e2c',cat:'ഹോട്ടൽ',name:'ഹോട്ടലിന്റെ പേര്',desc:'പ്രത്യേക വിഭവങ്ങൾ, സമയം.',sample:true},
+      {i:'☕',c:'#e0a82e',cat:'ചായക്കട / തട്ടുകട',name:'കടയുടെ പേര്',desc:'വൈകുന്നേര പലഹാരങ്ങൾ.',sample:true},
+      {i:'🥘',c:'#2f8f6b',cat:'കാറ്ററിംഗ്',name:'യൂണിറ്റിന്റെ പേര്',desc:'കല്യാണം, സദ്യ, പാർട്ടി ഓർഡറുകൾ.',sample:true}
+    ]},
+  { id:'shops', tab:'🛍️ കടകൾ', title:'നമ്മുടെ', grad:'കടകൾ', note:'പലചരക്ക് · മെഡിക്കൽ · ഹാർഡ്‌വെയർ',
+    add:'കട നടത്തുന്നുണ്ടോ? നിങ്ങളുടെ കട ചേർക്കൂ.',
+    cards:[
+      {i:'🛒',c:'#2f8f6b',cat:'പലചരക്ക് / സൂപ്പർമാർക്കറ്റ്',name:'കടയുടെ പേര്',desc:'സമയം, ഹോം ഡെലിവറി.',sample:true},
+      {i:'💊',c:'#ff4d6d',cat:'മെഡിക്കൽ ഷോപ്പ്',name:'ഷോപ്പിന്റെ പേര്',desc:'പ്രവർത്തന സമയം.',sample:true},
+      {i:'🔧',c:'#00a6b8',cat:'ഹാർഡ്‌വെയർ / ഇലക്ട്രിക്കൽ',name:'കടയുടെ പേര്',desc:'സാധനങ്ങളുടെ വിവരം.',sample:true},
+      {i:'👕',c:'#7c5cff',cat:'തുണിക്കട / ടെയ്‌ലർ',name:'കടയുടെ പേര്',desc:'വസ്ത്രങ്ങൾ, തയ്യൽ.',sample:true}
+    ]},
+  { id:'education', tab:'🎓 വിദ്യാഭ്യാസം', title:'വിദ്യാഭ്യാസ', grad:'സ്ഥാപനങ്ങൾ', note:'സ്കൂൾ · ട്യൂഷൻ · കോളേജ്',
+    add:'വിദ്യാഭ്യാസ സ്ഥാപനം ചേർക്കാൻ അയക്കൂ.',
+    cards:[
+      {i:'🏫',c:'#00a6b8',cat:'സ്കൂൾ',name:'സ്കൂളിന്റെ പേര്',desc:'ക്ലാസുകൾ, ഫോൺ നമ്പർ.',sample:true},
+      {i:'✏️',c:'#e0a82e',cat:'ട്യൂഷൻ / കോച്ചിംഗ്',name:'സെന്ററിന്റെ പേര്',desc:'വിഷയങ്ങൾ, ബാച്ച് സമയം.',sample:true},
+      {i:'🎓',c:'#7c5cff',cat:'കോളേജ് / ഐടിഐ',name:'സ്ഥാപനത്തിന്റെ പേര്',desc:'കോഴ്സുകൾ.',sample:true}
+    ]},
+  { id:'festivals', tab:'🪔 ഉത്സവങ്ങൾ', title:'ഉത്സവങ്ങൾ &', grad:'ആഘോഷങ്ങൾ', note:'ക്ഷേത്രം · പള്ളി · നേർച്ച · ഓണം · പെരുന്നാൾ',
+    add:'ഉത്സവത്തിന്റെ തീയതിയും വിവരങ്ങളും ചേർക്കൂ.',
+    cards:[
+      {i:'🥁',c:'#b24e2c',cat:'ക്ഷേത്രോത്സവം',name:'ചമ്മന്നൂർ പൂരം',desc:'തീയതി, പരിപാടികൾ ചേർക്കുക.',sample:true},
+      {i:'🌙',c:'#2f8f6b',cat:'നേർച്ച / പെരുന്നാൾ',name:'ആഘോഷത്തിന്റെ പേര്',desc:'തീയതി, വിവരങ്ങൾ.',sample:true},
+      {i:'🌼',c:'#e0a82e',cat:'ഓണം / വിഷു / ക്രിസ്മസ്',name:'കൂട്ടായ്മ ആഘോഷങ്ങൾ',desc:'ഗ്രാമത്തിലെ പൊതു പരിപാടികൾ.',sample:true}
+    ]},
+  { id:'social', tab:'📱 സോഷ്യൽ', title:'സോഷ്യൽ', grad:'മീഡിയ', note:'വാട്സാപ്പ് · ഇൻസ്റ്റഗ്രാം · ഫേസ്ബുക്ക് · യൂട്യൂബ്',
+    add:'നിങ്ങളുടെ ഗ്രൂപ്പോ പേജോ ഇവിടെ ചേർക്കണോ?',
+    cards:[
+      {i:'💬',c:'#25a85a',cat:'വാട്സാപ്പ്',name:'ചമ്മന്നൂർ ഗ്രൂപ്പ് / ചാനൽ',desc:'നാട്ടുവാർത്തകൾ അറിയാൻ.',link:'https://wa.me/918086797099',linkText:'ബന്ധപ്പെടൂ'},
+      {i:'📷',c:'#ff4d6d',cat:'ഇൻസ്റ്റഗ്രാം',name:'ഇൻസ്റ്റഗ്രാം പേജ്',desc:'ലിങ്ക് ചേർക്കുക.',sample:true},
+      {i:'👍',c:'#2f6fed',cat:'ഫേസ്ബുക്ക്',name:'ഫേസ്ബുക്ക് പേജ്',desc:'ലിങ്ക് ചേർക്കുക.',sample:true},
+      {i:'▶️',c:'#d62839',cat:'യൂട്യൂബ്',name:'യൂട്യൂബ് ചാനൽ',desc:'ലിങ്ക് ചേർക്കുക.',sample:true}
+    ]},
+  { id:'schemes', tab:'🏛️ പഞ്ചായത്ത് · PHC', title:'പഞ്ചായത്ത് · അങ്കണവാടി ·', grad:'PHC പദ്ധതികൾ', note:'പദ്ധതികൾ · സേവനങ്ങൾ · ക്ലിനിക്ക് സമയം',
+    intro:'വിവരങ്ങൾ ഔദ്യോഗിക ഓഫീസിൽ നിന്ന് ഉറപ്പാക്കി ചേർക്കുക.',
+    add:'പദ്ധതികളുടെ വിവരങ്ങൾ ചേർക്കാനോ തിരുത്താനോ അയക്കൂ.',
+    cards:[
+      {i:'🏛️',c:'#b24e2c',cat:'പഞ്ചായത്ത്',name:'ഗ്രാമപഞ്ചായത്ത് ഓഫീസ്',desc:'സർട്ടിഫിക്കറ്റുകൾ, ക്ഷേമ പെൻഷൻ, ലൈസൻസ്, അപേക്ഷകൾ. ഓഫീസ് സമയം / നമ്പർ ചേർക്കുക.',sample:true},
+      {i:'🧒',c:'#ff4d6d',cat:'അങ്കണവാടി',name:'അങ്കണവാടി കേന്ദ്രം',desc:'കുട്ടികൾക്കും ഗർഭിണികൾക്കും പോഷകാഹാരം, പ്രീ-സ്കൂൾ. വാർഡ് / ടീച്ചറുടെ നമ്പർ ചേർക്കുക.',sample:true},
+      {i:'🩺',c:'#2f8f6b',cat:'PHC / ആരോഗ്യ കേന്ദ്രം',name:'പ്രാഥമികാരോഗ്യ കേന്ദ്രം',desc:'OP സമയം, വാക്സിനേഷൻ ദിനങ്ങൾ, ക്ലിനിക്കുകൾ ചേർക്കുക.',sample:true},
+      {i:'📄',c:'#00a6b8',cat:'വില്ലേജ് ഓഫീസ്',name:'വില്ലേജ് ഓഫീസ്',desc:'സർട്ടിഫിക്കറ്റുകൾ, നികുതി. നമ്പർ ചേർക്കുക.',sample:true},
+      {i:'🌾',c:'#e0a82e',cat:'കൃഷിഭവൻ',name:'കൃഷിഭവൻ',desc:'കാർഷിക പദ്ധതികൾ, സബ്സിഡി, വിത്ത് വിതരണം.',sample:true},
+      {i:'🤝',c:'#7c5cff',cat:'കുടുംബശ്രീ',name:'കുടുംബശ്രീ യൂണിറ്റുകൾ',desc:'സ്ത്രീ സംരംഭങ്ങൾ, ലോൺ, പരിശീലനം.',sample:true}
+    ]},
+  { id:'clubs', tab:'⚽ ക്ലബ്ബുകൾ', title:'ക്ലബ്ബുകൾ &', grad:'കൂട്ടായ്മകൾ', note:'സ്പോർട്സ് · ആർട്സ് · ലൈബ്രറി',
+    add:'നിങ്ങളുടെ ക്ലബ്ബ് ചേർക്കാൻ അയക്കൂ.',
+    cards:[
+      {i:'⚽',c:'#2f8f6b',cat:'സ്പോർട്സ് ക്ലബ്',name:'ക്ലബ്ബിന്റെ പേര്',desc:'ഫുട്ബോൾ, ക്രിക്കറ്റ്, വോളിബോൾ.',sample:true},
+      {i:'🎭',c:'#7c5cff',cat:'ആർട്സ് ക്ലബ്',name:'ക്ലബ്ബിന്റെ പേര്',desc:'കല, സംഗീതം, നാടകം.',sample:true},
+      {i:'📚',c:'#e0a82e',cat:'വായനശാല',name:'വായനശാലയുടെ പേര്',desc:'പുസ്തകങ്ങൾ, പ്രവർത്തന സമയം.',sample:true},
+      {i:'🤲',c:'#ff4d6d',cat:'ചാരിറ്റി / സേവന കൂട്ടായ്മ',name:'കൂട്ടായ്മയുടെ പേര്',desc:'സന്നദ്ധ പ്രവർത്തനങ്ങൾ.',sample:true}
+    ]},
+  { id:'jobs', tab:'💼 ജോലി', title:'ജോബ്', grad:'പോർട്ടൽ', note:'നാട്ടിൽ · പരിസരത്ത് · ഓൺലൈൻ',
+    intro:'ജോലി നൽകാനുള്ളവർക്കും ജോലി അന്വേഷിക്കുന്നവർക്കും വാട്സാപ്പ് വഴി ബന്ധപ്പെടാം.',
+    add:'ഒഴിവുണ്ടോ? അല്ലെങ്കിൽ ജോലി അന്വേഷിക്കുന്നുണ്ടോ? അറിയിക്കൂ.',
+    cards:[
+      {i:'📢',c:'#b24e2c',cat:'ഫുൾ ടൈം',name:'ജോലി ഒഴിവ് — തസ്തികയുടെ പേര്',desc:'സ്ഥാപനം, ശമ്പളം, യോഗ്യത, ബന്ധപ്പെടേണ്ട നമ്പർ.',sample:true},
+      {i:'🕒',c:'#00a6b8',cat:'പാർട്ട് ടൈം',name:'പാർട്ട് ടൈം ഒഴിവ്',desc:'സമയം, ജോലിയുടെ സ്വഭാവം.',sample:true},
+      {i:'💻',c:'#7c5cff',cat:'റിമോട്ട് / ഫ്രീലാൻസ്',name:'വർക്ക് ഫ്രം ഹോം',desc:'ഓൺലൈൻ ജോലികൾ.',sample:true},
+      {i:'🙋',c:'#2f8f6b',cat:'ജോലി തേടുന്നവർ',name:'ഉദ്യോഗാർത്ഥിയുടെ വിവരം',desc:'യോഗ്യത, പരിചയം, ബന്ധപ്പെടാനുള്ള നമ്പർ.',sample:true}
+    ]}
+];
+
+/* ---------- RENDER ---------- */
+(function(){
+  const waNum = (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : '918086797099';
+  const wa = t => 'https://wa.me/' + waNum + '?text=' + encodeURIComponent(t);
+  const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>';
+
+  const cardHTML = d => `
+    <article class="dir-card" style="--c:${d.c}">
+      <span class="dir-icon">${d.i}</span>
+      <span class="dir-cat">${d.cat}</span>
+      <h3>${d.name}</h3>
+      <p>${d.desc}</p>
+      ${d.sample ? '<span class="dir-sample">ഉദാഹരണം · മാറ്റി ചേർക്കുക</span>' : ''}
+      ${(d.phone || d.link) ? `<div class="dir-actions">
+        ${d.phone ? `<a href="tel:${d.phone}">📞 വിളിക്കൂ</a><a href="https://wa.me/${d.phone.replace(/\D/g,'')}" target="_blank" rel="noopener">വാട്സാപ്പ്</a>` : ''}
+        ${d.link ? `<a href="${d.link}" target="_blank" rel="noopener">${d.linkText || 'തുറക്കൂ'} →</a>` : ''}
+      </div>` : ''}
+    </article>`;
+
+  const emergHTML = d => `
+    <a class="emerg-card" href="tel:${d.n}" style="--c:${d.c}">
+      <span class="emerg-num">${d.n}</span>
+      <div><h3>${d.name}</h3><p>${d.desc}</p></div>
+    </a>`;
+
+  const tileHTML = (d, sid, k) => `
+    <button type="button" class="tile" data-sec="${sid}" data-idx="${k}" style="--c:${d.c}">
+      <span class="dir-icon">${d.i}</span>
+      <h3>${d.name}</h3>
+    </button>`;
+
+  const callHTML = d => {
+    const digits = (d.phone || '').replace(/[^\d+]/g,'');
+    const shown = digits ? d.phone.replace(/^91(\d{5})(\d{5})$/,'+91 $1 $2') : 'നമ്പർ ചേർക്കുക';
+    const inner = `<span class="dir-icon">${d.i}</span>
+      <div><h3>${d.name}</h3><span class="call-num">📞 ${shown}</span></div>`;
+    return digits
+      ? `<a class="call-card" href="tel:${digits.startsWith('+') ? digits : '+' + digits}" style="--c:${d.c}">${inner}</a>`
+      : `<div class="call-card" style="--c:${d.c}">${inner}</div>`;
+  };
+
+  const addBar = (text, msg) => `
+    <div class="dir-add"><p>${text}</p>
+      <a class="wa-btn" href="${wa(msg)}" target="_blank" rel="noopener">${WA_SVG} വാട്സാപ്പിൽ അയക്കൂ</a>
+    </div>`;
+
+  /* spotlight */
+  const sp = document.getElementById('spotlight-root');
+  if (sp) {
+    sp.innerHTML = SPOTLIGHT.map(s => `
+      <article class="spot-card" style="--c:${s.c}">
+        <div class="spot-top"><span class="spot-type">${s.type}</span><span class="spot-date">${s.date}</span></div>
+        <h3>${s.title}</h3><p>${s.desc}</p>
+        ${s.sample ? '<span class="dir-sample" style="margin-top:12px;display:inline-block">ഉദാഹരണം · മാറ്റി ചേർക്കുക</span>' : ''}
+      </article>`).join('');
+    document.getElementById('spotlight-add').innerHTML =
+      `<p>നിങ്ങളുടെ നാട്ടിലെ പരിപാടിയോ നേട്ടമോ സ്പോട്ട്‌ലൈറ്റിൽ വരണോ? ഞങ്ങളെ അറിയിക്കൂ.</p>
+       <a class="wa-btn" href="${wa(WA_PROMPT.spotlight)}" target="_blank" rel="noopener">${WA_SVG} വാട്സാപ്പിൽ അയക്കൂ</a>`;
+  }
+
+  /* tabbed directory */
+  const tabsEl = document.getElementById('tabs');
+  const panelsEl = document.getElementById('panels');
+  if (tabsEl && panelsEl) {
+    tabsEl.innerHTML = SECTIONS.map(s =>
+      `<button class="tab" type="button" role="tab" id="tab-${s.id}" data-id="${s.id}" aria-selected="false" aria-controls="panel-${s.id}"><span class="te">${s.tab.split(' ')[0]}</span><span>${s.tab.split(' ').slice(1).join(' ')}</span></button>`).join('');
+
+    panelsEl.innerHTML = SECTIONS.map(s => {
+      const body = s.type === 'emergency'
+        ? `<div class="emerg-grid">${s.cards.map(emergHTML).join('')}</div>
+           <div class="dir-grid">${s.local.map(cardHTML).join('')}</div>`
+        : s.type === 'tiles'
+        ? `<div class="tile-grid">${s.cards.map((d,k) => tileHTML(d, s.id, k)).join('')}</div>`
+        : s.type === 'calls'
+        ? `<div class="call-grid">${s.cards.map(callHTML).join('')}</div>`
+        : `<div class="dir-grid">${s.cards.map(cardHTML).join('')}</div>`;
+      const msg = `ചമ്മന്നൂർ ഡയറക്ടറിയിലേക്ക് ചേർക്കാൻ (${s.tab}):\n\nപേര്:\nവിവരങ്ങൾ:\nഫോൺ / വാട്സാപ്പ്:\nസ്ഥലം:`;
+      return `
+      <div class="panel" id="panel-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" hidden>
+        <div class="panel-head"><h3>${s.title} <span class="grad">${s.grad}</span></h3>${s.intro ? `<p>${s.intro}</p>` : ''}</div>
+        ${body}
+        ${s.noAdd ? '' : addBar(s.add || 'ഈ പട്ടികയിൽ ചേർക്കാൻ വാട്സാപ്പിൽ അയക്കൂ.', msg)}
+      </div>`;
+    }).join('');
+
+    const tabs = [...tabsEl.querySelectorAll('.tab')];
+    const panels = [...panelsEl.querySelectorAll('.panel')];
+    const activate = (id, center = true) => {
+      if (!SECTIONS.some(s => s.id === id)) id = SECTIONS[0].id;
+      tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.id === id));
+      panels.forEach(p => p.hidden = p.id !== 'panel-' + id);
+    };
+    tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.id)));
+
+    /* nav links like "അടിയന്തരം" open their tab */
+    document.querySelectorAll('a[data-tab]').forEach(a =>
+      a.addEventListener('click', () => activate(a.dataset.tab)));
+
+    activate(SECTIONS.some(s => '#' + s.id === location.hash) ? location.hash.slice(1) : SECTIONS[0].id, false);
+  }
+
+  /* call sheet: tapping a worker category lists its people */
+  const sheetBg = document.getElementById('sheetBg');
+  const sheetTitle = document.getElementById('sheetTitle');
+  const sheetList = document.getElementById('sheetList');
+  const closeSheet = () => { sheetBg.classList.remove('open'); document.body.style.overflow = ''; };
+  const openSheet = card => {
+    sheetTitle.textContent = card.i + ' ' + card.name;
+    const people = (card.people && card.people.length) ? card.people : [];
+    sheetList.innerHTML = people.length
+      ? people.map(p => callHTML({i:'👤', c:card.c, name:p.name, phone:p.phone})).join('')
+      : '<p class="sheet-empty">ഇപ്പോൾ ആരുമില്ല. നിങ്ങളുടെ പേര് ചേർക്കാൻ വാട്സാപ്പിൽ ബന്ധപ്പെടൂ.</p>';
+    sheetBg.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  document.querySelectorAll('.tile[data-sec]').forEach(t => t.addEventListener('click', () => {
+    const sec = SECTIONS.find(s => s.id === t.dataset.sec);
+    openSheet(sec.cards[+t.dataset.idx]);
+  }));
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+  sheetBg.addEventListener('click', e => { if (e.target === sheetBg) closeSheet(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+  /* big cursor on the new interactive cards */
+  const c2 = document.getElementById('cursor');
+  if (c2) document.querySelectorAll('.dir-card,.spot-card,.emerg-card,.tab,.tile,a.call-card').forEach(el => {
+    el.addEventListener('mouseenter', () => c2.classList.add('big'));
+    el.addEventListener('mouseleave', () => c2.classList.remove('big'));
+  });
+})();
 </script>
 </body>
 </html>
