@@ -2,7 +2,7 @@
 <html lang="ml">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ചമ്മന്നൂർ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -382,12 +382,12 @@
   <nav class="site" id="siteNav">
     <ul>
      
-     
-      <li><a href="#gallery">ചിത്രങ്ങൾ</a></li>
       <li><a href="#businesses"> സംരംഭങ്ങൾ</a></li>
-      <li><a href="#directory">നാട്ടുവിവരങ്ങൾ</a></li>
-      <li><a href="#schools">വിദ്യാഭ്യാസം</a></li>
+      <li><a href="#community-initiatives">സമൂഹസേവനങ്ങൾ</a></li>
       <li><a href="#fundraising">സഹായനിധി</a></li>
+      <li><a href="#gallery">ചിത്രങ്ങൾ</a></li>
+      <li><a href="#location">സ്ഥലം</a></li>
+      <li><a href="#writing">നാട്ടുകഥകൾ</a></li>
       <li><a href="#voices">നാട്ടുശബ്ദങ്ങൾ</a></li>
       <li><a href="#submit">പങ്കുവെക്കാം</a></li>
       <li><a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a></li>
@@ -3815,6 +3815,153 @@ const SECTIONS = [
   });
 })();
 </script>
+
+
+
+<!-- FINAL RESPONSIVE OVERRIDES: desktop, tablet and mobile -->
+<style id="responsive-overrides">
+:root { scroll-padding-top: 88px; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { width: 100%; max-width: 100%; overflow-x: clip; }
+img, svg, video, canvas, iframe { max-width: 100%; }
+img { height: auto; }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+input, textarea, select { max-width: 100%; }
+.inner { width: 100%; min-width: 0; }
+section { padding: clamp(54px, 8vw, 110px) clamp(18px, 6vw, 88px); }
+section[id] { scroll-margin-top: 88px; }
+
+/* Navigation: allow every tab to be reached on smaller screens */
+header.site { min-height: 72px; gap: 18px; padding-left: max(18px, 4vw); padding-right: max(18px, 4vw); }
+.mark { flex: 0 0 auto; white-space: nowrap; }
+nav.site { min-width: 0; }
+nav.site ul { align-items: center; flex-wrap: wrap; }
+nav.site li { min-width: 0; }
+nav.site a { white-space: normal; }
+@media (max-width: 1100px) {
+  header.site { padding: 14px 5vw; }
+  nav.site { max-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  header.site.open nav.site { max-height: calc(100dvh - 70px); }
+  nav.site ul { align-items: stretch; gap: 0; padding: 12px 6vw max(24px, env(safe-area-inset-bottom)); }
+  nav.site li { border-bottom: 1px solid rgba(32,29,23,.07); }
+  nav.site a { display: block; padding: 10px 2px; font-size: 1rem; }
+}
+
+/* Flexible content grids */
+.story-grid, .gallery-grid, .business-grid,
+.spot-grid, .dir-grid, .emerg-grid, .call-grid,
+.tile-grid, .schools-grid, .ward-grid,
+.fundraising-types, .fund-steps, .initiative-grid {
+  min-width: 0;
+}
+.story-card, .gallery-card, .business-card, .spot-card,
+.dir-card, .emerg-card, .call-card, .tile-card,
+.school-card, .ward-card, .initiative-card,
+.fundraising-type, .fund-step, .report-info-card,
+.fundraising-intro, .fundraiser-request { min-width: 0; }
+.story-card img, .gallery-card img, .business-card img,
+.school-card img, .ward-card img, .report-image { max-width: 100%; }
+
+/* Tablet */
+@media (max-width: 980px) {
+  .hero { min-height: 88svh; padding: 120px 6vw 86px; }
+  .hero-inner { width: 100%; }
+  .spot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spot-card:first-child { grid-column: span 2; }
+  .dir-grid, .emerg-grid, .call-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .schools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ward-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fund-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fundraising-intro { grid-template-columns: 1fr; }
+  .fundraiser-request { grid-template-columns: 1fr; }
+  .report-container { grid-template-columns: 1fr; }
+  .business-cta { padding: clamp(26px, 5vw, 44px); }
+}
+
+/* Phones and small tablets */
+@media (max-width: 680px) {
+  body { font-size: 15px; line-height: 1.7; }
+  header.site { min-height: 64px; }
+  .mark { font-size: 1.12rem; }
+  .nav-toggle { width: 42px; height: 42px; flex: 0 0 42px; }
+  .hero { min-height: 780px; min-height: 100svh; padding: 112px 20px 82px; }
+  .hero h1 { font-size: clamp(2rem, 10vw, 3.4rem); line-height: 1.35; overflow-wrap: anywhere; }
+  .sub, .sub2 { font-size: .95rem; }
+  .pill { max-width: 100%; font-size: .78rem; padding: 7px 12px; }
+  .btns { gap: 10px; }
+  .btn { padding: 12px 22px; font-size: .9rem; }
+  .scroll { bottom: 14px; }
+  section { padding: 62px 20px; }
+  section[id] { scroll-margin-top: 70px; }
+  .head { align-items: flex-start; gap: 10px; margin-bottom: 30px; }
+  h2 { font-size: clamp(1.7rem, 8vw, 2.5rem); line-height: 1.4; }
+  .note { font-size: .8rem; }
+  .story-grid, .gallery-grid, .business-grid,
+  .spot-grid, .dir-grid, .emerg-grid, .call-grid,
+  .tile-grid, .schools-grid, .ward-grid,
+  .fundraising-types, .fund-steps, .initiative-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px;
+  }
+  .story-card.featured, .spot-card:first-child { grid-column: auto; }
+  .story-card { padding: 24px 20px; border-radius: 22px; }
+  .gallery-card { height: clamp(220px, 68vw, 310px); border-radius: 22px; }
+  .gallery-card:hover { transform: none; border-radius: 22px; }
+  .business-card { grid-template-columns: 46px minmax(0, 1fr); gap: 13px; padding: 20px 17px; }
+  .business-icon { width: 46px; height: 46px; border-radius: 14px; font-size: 1.3rem; }
+  .business-card h3 { font-size: 1.18rem; }
+  .business-cta { margin-top: 28px; padding: 26px 20px; border-radius: 24px; }
+  .voice { grid-template-columns: 38px minmax(0, 1fr); gap: 12px; padding: 22px 0; }
+  .qm { font-size: 3.2rem; }
+  .form { width: 100%; gap: 18px; }
+  .form-row { grid-template-columns: minmax(0, 1fr) !important; gap: 14px; }
+  .field input, .field textarea { font-size: 16px; }
+  .wa-btn { width: 100%; justify-content: center; }
+  .cta { margin: 0 14px 42px; padding: 64px 20px; border-radius: 28px; }
+  footer { padding: 0 20px 30px; flex-direction: column; font-size: .8rem; }
+  .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs button, .tab-button { min-width: 0; white-space: normal; }
+  .map-container iframe { height: 320px !important; }
+  .location-section { padding: 60px 18px; }
+  .location-heading h2 { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .report-section, .schools-section { padding-left: 18px; padding-right: 18px; }
+  .report-container { gap: 18px; }
+  .report-info-card { width: 100%; }
+  .report-form, .fundraiser-request form { width: 100%; min-width: 0; }
+  .fundraising-section { padding-left: 18px; padding-right: 18px; }
+  .fundraising-heading h2 { font-size: clamp(1.7rem, 8vw, 2.5rem); }
+  .fundraising-intro, .fundraiser-request { border-radius: 22px; }
+  .initiative-card { min-height: 0 !important; padding: 24px 20px; }
+  .initiative-description { min-height: 0; }
+  .school-card { height: 390px; }
+  .school-image { max-width: 100%; }
+  .lightbox { padding: 18px; }
+  .lightbox-close { top: 12px; right: 12px; }
+  #chammanur-chat { width: min(420px, calc(100vw - 20px)); right: 10px; bottom: 84px; }
+  #chammanur-chat-button { right: 16px; bottom: 16px; }
+}
+
+@media (max-width: 380px) {
+  .hero { padding-left: 15px; padding-right: 15px; }
+  .hero h1 { font-size: 1.9rem; }
+  section { padding-left: 15px; padding-right: 15px; }
+  .story-card, .business-card, .initiative-card { padding-left: 16px; padding-right: 16px; }
+  .tabs { grid-template-columns: 1fr; }
+}
+
+/* Touch devices: avoid hover-only motion and preserve readable content */
+@media (hover: none) {
+  .story-card:hover, .business-card:hover, .spot-card:hover,
+  .gallery-card:hover, .initiative-card:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+</style>
 
 </body>
 </html>
