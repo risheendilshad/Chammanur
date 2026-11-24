@@ -2594,17 +2594,18 @@ const WARD_MEMBERS = [
 }
 </style>
 <!-- Community Issue Report Section -->
-<section class="report-section">
+<section class="report-section" id="report">
   <div class="report-container">
 
-    <!-- Left Information Card -->
-    <div class="report-info-card">
-      <img
-        src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85"
-        alt="Community development"
-        class="report-image"
-      >
-
+    <!-- Information card (the report form now lives on report.html) -->
+    <div class="report-info-card reveal">
+      <div class="report-media">
+        <img
+          src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85"
+          alt="Community development"
+          class="report-image"
+          onerror="this.style.visibility='hidden'">
+      </div>
       <div class="report-info-content">
         <span class="report-tag">COMMUNITY SUPPORT</span>
         <h2>Your Voice Can Make a Difference</h2>
@@ -2621,175 +2622,137 @@ const WARD_MEMBERS = [
           <p>✓ Report waste disposal issues</p>
           <p>✓ Report public facility problems</p>
         </div>
+
+        <a href="report.html" class="report-cta">Report an Issue →</a>
       </div>
-    </div>
-
-    <!-- Right Submission Form -->
-    <div class="report-form-card">
-      <span class="report-tag">RAISE A COMMUNITY ISSUE</span>
-      <h2>Submit Your Report</h2>
-      <p class="form-intro">Please complete all fields to submit your report.</p>
-
-      <form id="communityReportForm">
-
-        <div class="form-group">
-          <label for="reportName">Full Name *</label>
-          <input type="text" id="reportName" placeholder="Enter your full name" required>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="wardNumber">Ward Number *</label>
-            <select id="wardNumber" required>
-              <option value="">Select ward</option>
-              <option value="Ward 1">Ward 1</option>
-              <option value="Ward 2">Ward 2</option>
-              <option value="Ward 3">Ward 3</option>
-              <option value="Ward 4">Ward 4</option>
-              <option value="Ward 5">Ward 5</option>
-              <option value="Ward 6">Ward 6</option>
-              <option value="Ward 7">Ward 7</option>
-              <option value="Ward 8">Ward 8</option>
-              <option value="Ward 9">Ward 9</option>
-              <option value="Ward 10">Ward 10</option>
-              <option value="Ward 11">Ward 11</option>
-              <option value="Ward 12">Ward 12</option>
-              <option value="Ward 13">Ward 13</option>
-              <option value="Ward 14">Ward 14</option>
-              <option value="Ward 15">Ward 15</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="reportCategory">Issue Category *</label>
-            <select id="reportCategory" required>
-              <option value="">Select category</option>
-              <option>Road Damage</option>
-              <option>Streetlight Issue</option>
-              <option>Water Supply</option>
-              <option>Drainage Problem</option>
-              <option>Waste Management</option>
-              <option>Public Facilities</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="reportLocation">Exact Location *</label>
-          <input type="text" id="reportLocation"
-                 placeholder="Enter street, landmark or location" required>
-        </div>
-
-        <div class="form-group">
-          <label for="reportDescription">Describe the Issue *</label>
-          <textarea id="reportDescription" rows="4"
-                    placeholder="Explain the problem in detail..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="reportPhoto">Upload Image *</label>
-          <input type="file" id="reportPhoto" accept="image/*" required>
-          <small>Image is required. Maximum file size: 5 MB.</small>
-          <img id="imagePreview" alt="Selected image preview"
-               style="display:none; width:100%; max-height:200px; object-fit:cover; border-radius:12px; margin-top:12px;">
-        </div>
-
-        <div class="form-group">
-          <label for="reportPhone">Contact Number *</label>
-          <input type="tel" id="reportPhone"
-                 placeholder="Enter your contact number"
-                 pattern="[0-9]{10}" maxlength="10"
-                 inputmode="numeric" required>
-          <small>Enter a valid 10-digit mobile number.</small>
-        </div>
-
-        <button type="submit" class="report-submit-btn">
-          Submit Report →
-        </button>
-
-      </form>
     </div>
 
   </div>
 </section>
 
 <style>
+/* ---- report info card: full width, responsive ---- */
 .report-section {
-  padding: 70px 20px;
+  padding: 70px 6vw;
   background: #fbf7f1;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Noto Sans Malayalam', sans-serif;
 }
 
 .report-container {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
 }
 
-.report-info-card,
-.report-form-card {
+.report-info-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  width: 100%;
+  min-width: 0;
   background: #fff;
-  border-radius: 22px;
+  border: 1px solid #eee8d6;
+  border-radius: 26px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(140,109,70,.12);
 }
 
+.report-media {
+  position: relative;
+  min-height: 360px;
+  background: linear-gradient(135deg, #2f8f6b, #00a6b8);
+}
+
 .report-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 280px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
 .report-info-content {
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: clamp(24px, 4vw, 52px);
 }
 
 .report-tag {
   display: inline-block;
-  color: #8c6d46;
+  align-self: flex-start;
+  color: #b24e2c;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 2px;
   margin-bottom: 12px;
 }
 
-.report-info-content h2,
-.report-form-card h2 {
-  font-family: 'Playfair Display', serif;
-  color: #3a2f22;
-  font-size: 30px;
+.report-info-content h2 {
+  font-family: 'Noto Serif Malayalam', serif;
+  color: #201d17;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1.4;
+  max-width: none;
   margin: 0 0 14px;
 }
 
-.report-info-content p,
-.form-intro {
-  color: #7a6c5a;
-  font-size: 14px;
-  line-height: 1.8;
+.report-info-content p {
+  color: #6b6250;
+  font-size: 15px;
+  line-height: 1.9;
 }
 
 .report-points {
-  margin-top: 22px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 20px;
 }
 
 .report-points p {
-  margin: 10px 0;
-  color: #5f503e;
+  margin: 6px 0;
+  color: #2f8f6b;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.report-form-card {
-  padding: 32px;
+.report-cta {
+  align-self: flex-start;
+  margin-top: 26px;
+  padding: 14px 30px;
+  border-radius: 99px;
+  background: #b24e2c;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background .3s, transform .3s, box-shadow .3s;
 }
 
-.form-intro {
-  margin-bottom: 22px;
+.report-cta:hover {
+  background: #913c21;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(178,78,44,.3);
 }
 
+@media (max-width: 900px) {
+  .report-points { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 800px) {
+  .report-info-card { grid-template-columns: 1fr; }
+  .report-media { min-height: 0; height: 240px; }
+}
+
+@media (max-width: 500px) {
+  .report-section { padding: 40px 14px; }
+  .report-info-content { padding: 22px 18px 26px; }
+  .report-media { height: 200px; }
+  .report-cta { align-self: stretch; text-align: center; }
+}
+
+/* ---- shared form styles (also used by the fundraising form on this page) ---- */
 .form-group {
   margin-bottom: 18px;
 }
@@ -2841,124 +2804,13 @@ const WARD_MEMBERS = [
   margin-top: 6px;
 }
 
-.report-submit-btn {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  background: #8c6d46;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: .3s;
-}
-
-.report-submit-btn:hover {
-  background: #3a2f22;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 800px) {
-  .report-container {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 500px) {
-  .report-section {
-    padding: 40px 14px;
-  }
-
-  .report-form-card,
-  .report-info-content {
-    padding: 22px;
-  }
-
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
-
-  .report-info-content h2,
-  .report-form-card h2 {
-    font-size: 25px;
-  }
 }
 </style>
-
-<script>
-const photoInput = document.getElementById("reportPhoto");
-const imagePreview = document.getElementById("imagePreview");
-
-photoInput.addEventListener("change", function () {
-  const file = this.files[0];
-
-  if (!file) {
-    imagePreview.style.display = "none";
-    imagePreview.removeAttribute("src");
-    return;
-  }
-
-  if (!file.type.startsWith("image/")) {
-    alert("Please select an image file.");
-    this.value = "";
-    imagePreview.style.display = "none";
-    return;
-  }
-
-  if (file.size > 5 * 1024 * 1024) {
-    alert("Image size must be less than 5 MB.");
-    this.value = "";
-    imagePreview.style.display = "none";
-    return;
-  }
-
-  imagePreview.src = URL.createObjectURL(file);
-  imagePreview.style.display = "block";
-});
-
-document.getElementById("communityReportForm").addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  if (!this.reportValidity()) return;
-
-  const photo = photoInput.files[0];
-
-  if (!photo || !photo.type.startsWith("image/") ||
-      photo.size > 5 * 1024 * 1024) {
-    alert("Please upload a valid image under 5 MB.");
-    return;
-  }
-
-  const name = document.getElementById("reportName").value.trim();
-  const ward = document.getElementById("wardNumber").value;
-  const category = document.getElementById("reportCategory").value;
-  const location = document.getElementById("reportLocation").value.trim();
-  const description = document.getElementById("reportDescription").value.trim();
-  const phone = document.getElementById("reportPhone").value.trim();
-
-  const message =
-`COMMUNITY ISSUE REPORT
-
-Name: ${name}
-Ward Number: ${ward}
-Category: ${category}
-Location: ${location}
-Description: ${description}
-Contact Number: ${phone}
-Image: ${photo.name}`;
-
-  // Replace this with the receiving mobile number, including country code.
-  const receivingNumber = "91XXXXXXXXXX";
-
-  const url = "https://wa.me/" + receivingNumber +
-              "?text=" + encodeURIComponent(message);
-
-  window.open(url, "_blank", "noopener,noreferrer");
-});
-</script>
 <footer>
   <span>© 2026 ചമ്മന്നൂർ, പുന്നയൂർക്കുളം</span>
   <span>Developed by Risheen Dilshad </span>
