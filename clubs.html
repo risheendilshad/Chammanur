@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ക്ലബ്ബുകൾ · ചമ്മന്നൂർ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#201d17; --muted:#6b6250;
+    --clay:#b24e2c; --gold:#e0a82e; --green:#2f8f6b; --teal:#00a6b8; --violet:#7c5cff; --rose:#ff4d6d;
+    --line:#eee8d6; --ease:cubic-bezier(.2,.9,.3,1);
+    --serif:'Noto Serif Malayalam',serif;
+    --sans:'Noto Sans Malayalam',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:#fff;color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--clay);color:#fff}
+
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:100;background:linear-gradient(90deg,var(--rose),var(--gold),var(--green),var(--teal),var(--violet))}
+
+  /* header */
+  header.site{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 5vw;transition:background .3s,padding .3s,box-shadow .3s;animation:dropIn .9s var(--ease) both}
+  header.site.scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);padding:12px 5vw;box-shadow:0 1px 0 var(--line)}
+  .mark{font-family:var(--serif);font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .mark i{width:12px;height:12px;border-radius:50%;background:var(--clay);display:block;position:relative}
+  .mark i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--clay);animation:ping 1.8s ease-out infinite}
+  .back{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:99px;border:2px solid var(--ink);font-size:.9rem;font-weight:700;transition:background .25s,color .25s}
+  .back:hover{background:var(--ink);color:#fff}
+
+  /* hero */
+  .hero{position:relative;text-align:center;padding:140px 6vw 70px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(55px);opacity:.5;z-index:0}
+  .b1{width:40vmax;height:40vmax;background:#7fd8c0;top:-16vmax;left:-12vmax;animation:float1 14s ease-in-out infinite}
+  .b2{width:34vmax;height:34vmax;background:#ffb08a;bottom:-16vmax;right:-10vmax;animation:float2 17s ease-in-out infinite}
+  .b3{width:20vmax;height:20vmax;background:#ffe08a;top:20%;right:18%;opacity:.4;animation:float3 12s ease-in-out infinite}
+  .shape{position:absolute;z-index:1;pointer-events:none}
+  .ring{width:70px;height:70px;border:6px solid var(--green);border-radius:50%;top:26%;left:8%;animation:bob 6s ease-in-out infinite}
+  .sq{width:48px;height:48px;background:var(--gold);border-radius:12px;top:22%;right:10%;animation:rot 8s ease-in-out infinite}
+  .dots{width:100px;height:100px;bottom:10%;left:6%;background-image:radial-gradient(var(--teal) 3px,transparent 3px);background-size:20px 20px;animation:bob 7s ease-in-out infinite reverse}
+  .hero-inner{position:relative;z-index:2;max-width:860px;margin:0 auto}
+  .pill{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:99px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 30px rgba(178,78,44,.14);font-size:.88rem;font-weight:600;margin-bottom:22px;animation:rise .9s .2s both}
+  .pill b{width:9px;height:9px;border-radius:50%;background:#22c55e;position:relative;flex:none}
+  .pill b::after{content:"";position:absolute;inset:0;border-radius:50%;background:#22c55e;animation:ping 1.6s ease-out infinite}
+  h1{font-family:var(--serif);font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.35;font-weight:800;animation:rise 1s .3s both}
+  .grad{background:linear-gradient(90deg,var(--clay),var(--gold),var(--green),var(--teal),var(--clay));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradMove 6s linear infinite}
+  .sub{margin:22px auto 0;max-width:620px;font-size:1.05rem;color:var(--muted);animation:rise 1s .5s both}
+
+  /* sections */
+  section{padding:clamp(54px,8vw,100px) 6vw;position:relative}
+  .inner{max-width:1100px;margin:0 auto}
+  .tag{font-weight:700;color:var(--clay);font-size:.9rem;margin-bottom:8px}
+  h2{font-family:var(--serif);font-size:clamp(1.8rem,4.6vw,3.2rem);line-height:1.4;font-weight:800;max-width:860px}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:40px}
+  .note{color:var(--muted);font-size:.9rem;font-weight:500}
+  .reveal{opacity:0;transform:translateY(46px) scale(.98);transition:opacity .8s,transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== slideshow ===== */
+  .slider{position:relative;border-radius:32px;overflow:hidden;background:var(--ink);box-shadow:0 28px 60px rgba(0,0,0,.18);isolation:isolate;touch-action:pan-y}
+  .track{display:flex;transition:transform .8s var(--ease);will-change:transform}
+  .slide{position:relative;flex:0 0 100%;aspect-ratio:16/9;background:var(--bg);overflow:hidden}
+  .slide::before,.slide::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.2)}
+  .slide::before{width:260px;height:260px;top:-80px;right:-60px;animation:float3 9s ease-in-out infinite}
+  .slide::after{width:160px;height:160px;bottom:30px;left:-40px;animation:float1 11s ease-in-out infinite}
+  .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+  .slide .shade{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(14,27,22,.85),rgba(14,27,22,.05) 62%,transparent);pointer-events:none}
+  .slide .cap{position:absolute;left:clamp(16px,3vw,32px);right:clamp(16px,3vw,32px);bottom:clamp(30px,5vw,48px);z-index:3;color:#fff}
+  .cap span{display:block;font-size:.75rem;letter-spacing:.12em;font-weight:700;color:#ffe08a;margin-bottom:2px}
+  .cap h3{font-family:var(--serif);font-size:clamp(1.15rem,3.2vw,2rem);font-weight:600;line-height:1.4}
+  .cap p{font-size:clamp(.8rem,1.8vw,.95rem);opacity:.9}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:var(--ink);font-size:1.3rem;line-height:1;cursor:pointer;display:grid;place-items:center;transition:background .2s,transform .2s}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.1)}
+  .arrow.prev{left:14px}.arrow.next{right:14px}
+  .dots-nav{position:absolute;left:0;right:0;bottom:14px;z-index:5;display:flex;justify-content:center;gap:8px}
+  .dots-nav button{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.55);cursor:pointer;transition:width .3s,background .3s}
+  .dots-nav button.on{width:26px;background:var(--gold)}
+  .bar{position:absolute;left:0;bottom:0;height:3px;width:0;z-index:5;background:var(--gold)}
+  .bar.run{animation:fill var(--dur,4500ms) linear forwards}
+
+  /* ===== club cards: 2 per row ===== */
+  .club-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+  .club-card{padding:32px;border-radius:28px;border:2px solid var(--line);background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+  .club-card::before{content:"";position:absolute;width:210px;height:210px;border-radius:50%;background:var(--c);top:-105px;right:-105px;opacity:.18;transition:transform .6s}
+  .club-card:hover{transform:translateY(-8px) rotate(-.5deg);box-shadow:0 28px 55px rgba(0,0,0,.1);border-color:var(--c)}
+  .club-card:hover::before{transform:scale(3)}
+  .club-top{display:flex;align-items:center;gap:14px;position:relative;margin-bottom:8px}
+  .club-icon{width:58px;height:58px;flex:none;border-radius:18px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:1.7rem;animation:bob 4s ease-in-out infinite}
+  .club-card:nth-child(2n) .club-icon{animation-delay:-1.5s}
+  .club-cat{display:block;font-size:.8rem;font-weight:700;color:var(--c)}
+  .club-card h3{font-family:var(--serif);font-size:clamp(1.25rem,2.4vw,1.55rem);line-height:1.45;font-weight:600;position:relative}
+  .club-desc{color:var(--muted);font-size:.97rem;line-height:1.85;position:relative}
+  .club-meta{list-style:none;display:grid;gap:4px;margin-top:8px;padding-top:12px;border-top:1px solid var(--line);font-size:.88rem;color:#4b4636;position:relative}
+  .dir-sample{align-self:flex-start;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:99px;background:#fff3d1;color:#8a6410;position:relative;margin-top:6px}
+  .club-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px;position:relative}
+  .club-actions a{padding:7px 16px;border-radius:99px;font-size:.85rem;font-weight:700;border:2px solid var(--c);color:var(--c);transition:background .2s,color .2s}
+  .club-actions a:hover{background:var(--c);color:#fff}
+
+  /* add club bar + cta */
+  .dir-add{margin-top:36px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:22px 26px;border-radius:26px;background:var(--ink);color:#fff}
+  .dir-add p{flex:1;min-width:220px;opacity:.9;font-size:.98rem}
+  .wa-btn{display:inline-flex;align-items:center;gap:10px;background:#25a85a;color:#fff;border:0;padding:14px 28px;border-radius:99px;font:inherit;font-weight:700;font-size:.98rem;cursor:pointer;transition:transform .2s,box-shadow .3s}
+  .wa-btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(37,168,90,.4)}
+  .wa-btn svg{width:18px;height:18px;animation:wiggle 2.4s ease-in-out infinite}
+
+  footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:30px 6vw 46px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(8vw,6vh) scale(1.15)}66%{transform:translate(-4vw,10vh) scale(.92)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-10vw,-8vh) scale(1.2)}}
+  @keyframes float3{0%,100%{transform:translate(0,0)}25%{transform:translate(-6vw,4vh)}50%{transform:translate(2vw,-6vh)}75%{transform:translate(6vw,3vh)}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(6deg)}}
+  @keyframes rot{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.3);border-radius:50%}}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  @keyframes dropIn{from{transform:translateY(-100%)}to{transform:none}}
+  @keyframes gradMove{to{background-position:300% 0}}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}10%,30%{transform:rotate(-12deg)}20%,40%{transform:rotate(12deg)}50%{transform:rotate(0)}}
+  @keyframes ping{to{transform:scale(3.2);opacity:0}}
+  @keyframes fill{to{width:100%}}
+
+  /* responsive */
+  @media(max-width:860px){
+    .head{margin-bottom:28px}
+    .club-card{padding:24px 20px;border-radius:24px}
+  }
+  /* phones: keep 2 per row, compact so descriptions still read well */
+  @media(max-width:640px){
+    body{font-size:15px}
+    .mark{font-size:1.1rem}
+    .back{padding:8px 14px;font-size:.82rem}
+    .hero{padding:112px 20px 54px}
+    .slider{border-radius:22px}
+    .slide{aspect-ratio:4/3}
+    .arrow{width:36px;height:36px;font-size:1.1rem}
+    .arrow.prev{left:8px}.arrow.next{right:8px}
+    .club-grid{gap:12px}
+    .club-card{padding:16px 14px;border-radius:20px;gap:4px}
+    .club-top{flex-direction:column;align-items:flex-start;gap:8px}
+    .club-icon{width:44px;height:44px;border-radius:14px;font-size:1.3rem}
+    .club-cat{font-size:.7rem}
+    .club-card h3{font-size:1rem;line-height:1.5}
+    .club-desc{font-size:.8rem;line-height:1.7}
+    .club-meta{font-size:.74rem}
+    .club-actions a{padding:6px 12px;font-size:.76rem}
+    .dir-add{padding:18px;gap:12px}
+    .wa-btn{width:100%;justify-content:center}
+    footer{flex-direction:column;font-size:.8rem}
+  }
+  @media(max-width:340px){.club-grid{grid-template-columns:1fr}}
+  @media(hover:none){.club-card:hover{transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="site" id="siteHeader">
+  <a class="mark" href="chammanur.html"><i></i> ചമ്മന്നൂർ</a>
+  <a class="back" href="chammanur.html">← മുഖ്യ പേജ്</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="shape ring"></div><div class="shape sq"></div><div class="shape dots"></div>
+  <div class="hero-inner">
+    <div class="pill"><b></b> നാടിന്റെ കൂട്ടായ്മകൾ</div>
+    <h1>ചമ്മന്നൂരിലെ <span class="grad">ക്ലബ്ബുകൾ</span></h1>
+    <p class="sub">കളിക്കളം മുതൽ വായനശാല വരെ — നാടിനെ ഒന്നിപ്പിച്ചു നിർത്തുന്ന ക്ലബ്ബുകളെയും കൂട്ടായ്മകളെയും പരിചയപ്പെടൂ.</p>
+  </div>
+</div>
+
+<!-- GALLERY SLIDESHOW -->
+<section id="gallery" style="padding-top:20px">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal"><p class="tag">കണ്ടുനോക്കൂ</p><h2>ക്ലബ്ബ് <span class="grad">ഗാലറി</span></h2></div>
+      <span class="note reveal">സ്വയം നീങ്ങും · സ്വൈപ്പ് ചെയ്യാം</span>
+    </div>
+    <div class="slider reveal" id="slider" aria-roledescription="carousel" aria-label="ക്ലബ്ബ് ചിത്രങ്ങൾ">
+      <div class="track" id="track"></div>
+      <button class="arrow prev" id="prev" type="button" aria-label="മുമ്പത്തേത്">‹</button>
+      <button class="arrow next" id="next" type="button" aria-label="അടുത്തത്">›</button>
+      <div class="dots-nav" id="dotsNav"></div>
+      <div class="bar" id="bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLUBS -->
+<section id="clubs" style="padding-top:20px">
+  <div class="inner">
+    <div class="head">
+      <div class="reveal"><p class="tag">നമ്മുടെ കൂട്ടായ്മകൾ</p><h2>ക്ലബ്ബുകൾ &amp; <span class="grad">വിശദാംശങ്ങൾ</span></h2></div>
+      <span class="note reveal">സ്പോർട്സ് · ആർട്സ് · ലൈബ്രറി · സേവനം</span>
+    </div>
+    <div class="club-grid" id="clubGrid"></div>
+    <div class="dir-add reveal">
+      <p>നിങ്ങളുടെ ക്ലബ്ബ് ഇവിടെ ചേർക്കണോ? പേര്, പ്രവർത്തനങ്ങൾ, ബന്ധപ്പെടേണ്ട നമ്പർ എന്നിവ അയക്കൂ.</p>
+      <a class="wa-btn" id="addClub" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
+        വാട്സാപ്പിൽ അയക്കൂ
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 ചമ്മന്നൂർ, പുന്നയൂർക്കുളം</span>
+  <span>Developed by Risheen Dilshad</span>
+</footer>
+
+<script>
+/* =========================================================
+   EDIT HERE ONLY
+   - SLIDES: img = file name in the same folder as this page.
+     If the image is missing, the coloured background shows.
+   - CLUBS: replace the sample text with real details,
+     then delete  sample:true  from that club.
+     phone: country code + number, e.g. '919xxxxxxxxx'
+   ========================================================= */
+const WHATSAPP_NUMBER = "918086797099";
+
+const SLIDES = [
+  {img:'club1.jpg', bg:'linear-gradient(135deg,#2f8f6b,#00a6b8)', no:'01', title:'സ്പോർട്സ് ദിനം',      text:'ക്ലബ്ബ് അംഗങ്ങളുടെ വാർഷിക കായിക മത്സരം.'},
+  {img:'club2.jpg', bg:'linear-gradient(135deg,#7c5cff,#ff4d6d)', no:'02', title:'കലാസന്ധ്യ',           text:'നാട്ടിലെ കലാകാരന്മാർ ഒത്തുചേർന്ന വേദി.'},
+  {img:'club3.jpg', bg:'linear-gradient(135deg,#e0a82e,#b24e2c)', no:'03', title:'വായനശാല ഒത്തുചേരൽ', text:'പുസ്തകങ്ങളും ചർച്ചകളും ഒരു വൈകുന്നേരം.'},
+  {img:'club4.jpg', bg:'linear-gradient(135deg,#00a6b8,#7c5cff)', no:'04', title:'സേവന പ്രവർത്തനം',    text:'നാടിനായി കൈകോർത്ത നിമിഷങ്ങൾ.'}
+];
+
+const CLUBS = [
+  {i:'⚽', c:'#2f8f6b', cat:'സ്പോർട്സ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
+   desc:'ഫുട്ബോൾ, ക്രിക്കറ്റ്, വോളിബോൾ തുടങ്ങിയ കായിക ഇനങ്ങളിൽ നാട്ടിലെ യുവാക്കൾക്ക് പരിശീലനവും മത്സരങ്ങളും ഒരുക്കുന്ന കൂട്ടായ്മ.',
+   est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
+  {i:'🎭', c:'#7c5cff', cat:'ആർട്സ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
+   desc:'കല, സംഗീതം, നാടകം, നൃത്തം എന്നിവയെ പ്രോത്സാഹിപ്പിക്കുകയും ഉത്സവ വേദികളിൽ പരിപാടികൾ അവതരിപ്പിക്കുകയും ചെയ്യുന്നു.',
+   est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
+  {i:'📚', c:'#e0a82e', cat:'വായനശാല', name:'വായനശാലയുടെ പേര്',
+   desc:'പുസ്തകങ്ങൾ, പത്രമാസികകൾ, വായനാ മത്സരങ്ങൾ. എല്ലാ പ്രായക്കാർക്കും ഒത്തുകൂടി വായിക്കാനുള്ള ഇടം.',
+   est:'പ്രവർത്തന സമയം: ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
+  {i:'🤲', c:'#ff4d6d', cat:'ചാരിറ്റി / സേവന കൂട്ടായ്മ', name:'കൂട്ടായ്മയുടെ പേര്',
+   desc:'അവശത അനുഭവിക്കുന്ന കുടുംബങ്ങൾക്കും രോഗികൾക്കും സഹായമെത്തിക്കുന്ന സന്നദ്ധ പ്രവർത്തനങ്ങൾ.',
+   est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
+  {i:'🏏', c:'#00a6b8', cat:'ക്രിക്കറ്റ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
+   desc:'ടൂർണമെന്റുകൾ, ടർഫ് മത്സരങ്ങൾ, കുട്ടികൾക്കുള്ള ക്രിക്കറ്റ് പരിശീലനം.',
+   est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
+  {i:'🌱', c:'#b24e2c', cat:'യുവജന ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
+   desc:'പരിസ്ഥിതി സംരക്ഷണം, വൃക്ഷത്തൈ നടൽ, ശുചീകരണ യജ്ഞങ്ങൾ, ക്യാമ്പുകൾ എന്നിവ സംഘടിപ്പിക്കുന്നു.',
+   est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true}
+];
+
+/* ---------------- render clubs ---------------- */
+document.getElementById('clubGrid').innerHTML = CLUBS.map(d => {
+  const digits = (d.phone || '').replace(/\D/g,'');
+  return `
+  <article class="club-card reveal" style="--c:${d.c}">
+    <div class="club-top">
+      <span class="club-icon">${d.i}</span>
+      <div><span class="club-cat">${d.cat}</span><h3>${d.name}</h3></div>
+    </div>
+    <p class="club-desc">${d.desc}</p>
+    <ul class="club-meta"><li>📅 ${d.est}</li><li>📍 ${d.place}</li></ul>
+    ${d.sample ? '<span class="dir-sample">ഉദാഹരണം · മാറ്റി ചേർക്കുക</span>' : ''}
+    ${digits ? `<div class="club-actions"><a href="tel:+${digits}">📞 വിളിക്കൂ</a><a href="https://wa.me/${digits}" target="_blank" rel="noopener">വാട്സാപ്പ്</a></div>` : ''}
+  </article>`;
+}).join('');
+
+document.getElementById('addClub').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' +
+  encodeURIComponent('ചമ്മന്നൂർ ക്ലബ്ബ് പേജിലേക്ക് ചേർക്കാൻ:\n\nക്ലബ്ബിന്റെ പേര്:\nതരം:\nവിവരണം:\nസ്ഥാപിച്ച വർഷം:\nഫോൺ / വാട്സാപ്പ്:');
+
+/* ---------------- slideshow ---------------- */
+(function(){
+  const track = document.getElementById('track');
+  const dotsNav = document.getElementById('dotsNav');
+  const slider = document.getElementById('slider');
+  const bar = document.getElementById('bar');
+  const DELAY = 4500;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let idx = 0, timer = null, paused = false;
+
+  track.innerHTML = SLIDES.map((s,k) => `
+    <div class="slide" style="--bg:${s.bg}" role="group" aria-roledescription="slide" aria-label="${k+1} / ${SLIDES.length}">
+      <img src="${s.img}" alt="${s.title}" ${k ? 'loading="lazy"' : ''} onerror="this.style.display='none'">
+      <div class="shade"></div>
+      <div class="cap"><span>${s.no}</span><h3>${s.title}</h3><p>${s.text}</p></div>
+    </div>`).join('');
+
+  dotsNav.innerHTML = SLIDES.map((_,k) => `<button type="button" aria-label="സ്ലൈഡ് ${k+1}"></button>`).join('');
+  const dots = [...dotsNav.children];
+  dots.forEach((d,k) => d.addEventListener('click', () => { go(k); restart(); }));
+
+  function runBar(){
+    bar.classList.remove('run'); void bar.offsetWidth;
+    bar.style.setProperty('--dur', DELAY + 'ms');
+    if (!reduce && !paused) bar.classList.add('run');
+  }
+  function go(n){
+    idx = (n + SLIDES.length) % SLIDES.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    dots.forEach((d,k) => d.classList.toggle('on', k === idx));
+  }
+  function stop(){ clearInterval(timer); timer = null; bar.classList.remove('run'); }
+  function start(){
+    if (reduce || paused || SLIDES.length < 2) return;
+    stop(); runBar();
+    timer = setInterval(() => { go(idx + 1); runBar(); }, DELAY);
+  }
+  function restart(){ stop(); start(); }
+
+  document.getElementById('next').addEventListener('click', () => { go(idx + 1); restart(); });
+  document.getElementById('prev').addEventListener('click', () => { go(idx - 1); restart(); });
+
+  /* pause on hover / focus */
+  slider.addEventListener('mouseenter', () => { paused = true; stop(); });
+  slider.addEventListener('mouseleave', () => { paused = false; start(); });
+  slider.addEventListener('focusin',  () => { paused = true; stop(); });
+  slider.addEventListener('focusout', () => { paused = false; start(); });
+
+  /* swipe on touch screens */
+  let x0 = null;
+  slider.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; stop(); }, {passive:true});
+  slider.addEventListener('touchend', e => {
+    if (x0 !== null) {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) go(idx + (dx < 0 ? 1 : -1));
+    }
+    x0 = null; start();
+  });
+
+  /* pause when tab is hidden */
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+  go(0); start();
+})();
+
+/* ---------------- header, progress, reveal ---------------- */
+const header = document.getElementById('siteHeader');
+const prog = document.getElementById('progress');
+addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', scrollY > 12);
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+}, {passive:true});
+
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12, rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach((el,i) => {
+  el.style.transitionDelay = (i % 2) * 90 + 'ms';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
