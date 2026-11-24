@@ -90,8 +90,9 @@
   .club-card:hover{transform:translateY(-8px) rotate(-.5deg);box-shadow:0 28px 55px rgba(0,0,0,.1);border-color:var(--c)}
   .club-card:hover::before{transform:scale(3)}
   .club-top{display:flex;align-items:center;gap:14px;position:relative;margin-bottom:8px}
-  .club-icon{width:58px;height:58px;flex:none;border-radius:18px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:1.7rem;animation:bob 4s ease-in-out infinite}
-  .club-card:nth-child(2n) .club-icon{animation-delay:-1.5s}
+  .club-icon{position:relative;width:76px;height:76px;flex:none;border-radius:22px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:2rem;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.12);border:3px solid #fff;outline:2px solid var(--c)}
+  .club-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .club-card:last-child:nth-child(odd){grid-column:1/-1}
   .club-cat{display:block;font-size:.8rem;font-weight:700;color:var(--c)}
   .club-card h3{font-family:var(--serif);font-size:clamp(1.25rem,2.4vw,1.55rem);line-height:1.45;font-weight:600;position:relative}
   .club-desc{color:var(--muted);font-size:.97rem;line-height:1.85;position:relative}
@@ -140,7 +141,7 @@
     .club-grid{gap:12px}
     .club-card{padding:16px 14px;border-radius:20px;gap:4px}
     .club-top{flex-direction:column;align-items:flex-start;gap:8px}
-    .club-icon{width:44px;height:44px;border-radius:14px;font-size:1.3rem}
+    .club-icon{width:60px;height:60px;border-radius:18px;font-size:1.6rem}
     .club-cat{font-size:.7rem}
     .club-card h3{font-size:1rem;line-height:1.5}
     .club-desc{font-size:.8rem;line-height:1.7}
@@ -200,7 +201,7 @@
   <div class="inner">
     <div class="head">
       <div class="reveal"><p class="tag">നമ്മുടെ കൂട്ടായ്മകൾ</p><h2>ക്ലബ്ബുകൾ &amp; <span class="grad">വിശദാംശങ്ങൾ</span></h2></div>
-      <span class="note reveal">സ്പോർട്സ് · ആർട്സ് · ലൈബ്രറി · സേവനം</span>
+      <span class="note reveal">ചമ്മന്നൂരിലെ ക്ലബ്ബുകൾ</span>
     </div>
     <div class="club-grid" id="clubGrid"></div>
     <div class="dir-add reveal">
@@ -237,23 +238,22 @@ const SLIDES = [
 ];
 
 const CLUBS = [
-  {i:'⚽', c:'#2f8f6b', cat:'സ്പോർട്സ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
-   desc:'ഫുട്ബോൾ, ക്രിക്കറ്റ്, വോളിബോൾ തുടങ്ങിയ കായിക ഇനങ്ങളിൽ നാട്ടിലെ യുവാക്കൾക്ക് പരിശീലനവും മത്സരങ്ങളും ഒരുക്കുന്ന കൂട്ടായ്മ.',
+  /* img = logo/photo file name in the same folder (square image works best).
+     If the file is missing, the emoji (i) shows instead. */
+  {img:'angadianz.jpg', i:'🛡️', c:'#b24e2c', cat:'ക്ലബ്ബ്', name:'Angadianz',
+   desc:'അങ്ങാടിയുടെ കരുത്തിൽ വളർന്ന കൂട്ടായ്മ. കായിക മത്സരങ്ങൾ, ആഘോഷങ്ങൾ, നാടിനായുള്ള സേവന പ്രവർത്തനങ്ങൾ എന്നിവയിൽ സജീവം.',
    est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
-  {i:'🎭', c:'#7c5cff', cat:'ആർട്സ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
-   desc:'കല, സംഗീതം, നാടകം, നൃത്തം എന്നിവയെ പ്രോത്സാഹിപ്പിക്കുകയും ഉത്സവ വേദികളിൽ പരിപാടികൾ അവതരിപ്പിക്കുകയും ചെയ്യുന്നു.',
+  {img:'vadakkanz.jpg', i:'🧭', c:'#2f8f6b', cat:'ക്ലബ്ബ്', name:'Vadakkanz',
+   desc:'വടക്കൻ മേഖലയിലെ യുവാക്കളുടെ കൂട്ടായ്മ. ടൂർണമെന്റുകൾ, കലാപരിപാടികൾ, ഉത്സവ വേദികളിലെ പങ്കാളിത്തം.',
    est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
-  {i:'📚', c:'#e0a82e', cat:'വായനശാല', name:'വായനശാലയുടെ പേര്',
-   desc:'പുസ്തകങ്ങൾ, പത്രമാസികകൾ, വായനാ മത്സരങ്ങൾ. എല്ലാ പ്രായക്കാർക്കും ഒത്തുകൂടി വായിക്കാനുള്ള ഇടം.',
-   est:'പ്രവർത്തന സമയം: ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
-  {i:'🤲', c:'#ff4d6d', cat:'ചാരിറ്റി / സേവന കൂട്ടായ്മ', name:'കൂട്ടായ്മയുടെ പേര്',
-   desc:'അവശത അനുഭവിക്കുന്ന കുടുംബങ്ങൾക്കും രോഗികൾക്കും സഹായമെത്തിക്കുന്ന സന്നദ്ധ പ്രവർത്തനങ്ങൾ.',
+  {img:'sulthan.jpg', i:'👑', c:'#e0a82e', cat:'ക്ലബ്ബ്', name:'Sulthan',
+   desc:'കളിക്കളത്തിലും നാട്ടുകാര്യങ്ങളിലും ഒരുമിച്ച് നിൽക്കുന്ന കൂട്ടായ്മ. കായിക പരിശീലനവും സൗഹൃദ മത്സരങ്ങളും സംഘടിപ്പിക്കുന്നു.',
    est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
-  {i:'🏏', c:'#00a6b8', cat:'ക്രിക്കറ്റ് ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
-   desc:'ടൂർണമെന്റുകൾ, ടർഫ് മത്സരങ്ങൾ, കുട്ടികൾക്കുള്ള ക്രിക്കറ്റ് പരിശീലനം.',
+  {img:'alazka.jpg', i:'⭐', c:'#7c5cff', cat:'ക്ലബ്ബ്', name:'Alazka',
+   desc:'കലയും കായികവും സമന്വയിപ്പിക്കുന്ന യുവജന കൂട്ടായ്മ. ക്യാമ്പുകൾ, ശുചീകരണ യജ്ഞങ്ങൾ, ആഘോഷ പരിപാടികൾ.',
    est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true},
-  {i:'🌱', c:'#b24e2c', cat:'യുവജന ക്ലബ്ബ്', name:'ക്ലബ്ബിന്റെ പേര്',
-   desc:'പരിസ്ഥിതി സംരക്ഷണം, വൃക്ഷത്തൈ നടൽ, ശുചീകരണ യജ്ഞങ്ങൾ, ക്യാമ്പുകൾ എന്നിവ സംഘടിപ്പിക്കുന്നു.',
+  {img:'kaliyuga.jpg', i:'🔥', c:'#ff4d6d', cat:'ക്ലബ്ബ്', name:'Kaliyuga',
+   desc:'ആവേശം നിറഞ്ഞ കളികളും കൂട്ടായ്മയും. നാട്ടിലെ ടൂർണമെന്റുകളിലും സാംസ്കാരിക പരിപാടികളിലും സജീവ സാന്നിധ്യം.',
    est:'സ്ഥാപിതം: വർഷം ചേർക്കുക', place:'ചമ്മന്നൂർ', phone:'', sample:true}
 ];
 
@@ -263,7 +263,7 @@ document.getElementById('clubGrid').innerHTML = CLUBS.map(d => {
   return `
   <article class="club-card reveal" style="--c:${d.c}">
     <div class="club-top">
-      <span class="club-icon">${d.i}</span>
+      <span class="club-icon"><span class="fb">${d.i}</span>${d.img ? `<img src="${d.img}" alt="${d.name} logo" loading="lazy" onerror="this.remove()">` : ''}</span>
       <div><span class="club-cat">${d.cat}</span><h3>${d.name}</h3></div>
     </div>
     <p class="club-desc">${d.desc}</p>
